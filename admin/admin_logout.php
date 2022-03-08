@@ -7,7 +7,7 @@
 
 	session_destroy();
 	
-	header("Location: http://".$_SERVER[SERVER_NAME]."/rig/admin");
+	header("Location: http://".$_SERVER[SERVER_NAME]."/admin");
 ?>
 <html>
     <head></head>

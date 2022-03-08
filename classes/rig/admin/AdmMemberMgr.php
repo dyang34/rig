@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/admin/AdmMemberDao.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/A_Mgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/DbUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/AdmMemberDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
 class AdmMemberMgr extends A_Mgr
 {

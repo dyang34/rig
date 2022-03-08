@@ -1,14 +1,14 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/member/MemberMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/Page.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/member/MemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/Page.php";
 
 if(!LoginManager::isManagerLogined()) {
-    JsUtil::alertReplace("로그인이 필요합니다.    ","/rig/admin");
+    JsUtil::alertReplace("로그인이 필요합니다.    ","/admin");
     exit;
 }
 
@@ -51,15 +51,15 @@ switch($_orderby) {
 
 $rs = MemberMgr::getInstance()->getListPerPage($wq, $pg);
 
-include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/head.php";
+include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
 ?>
 <body style="font-family: 'Noto Sans KR', sans-serif; line-height:1; font-size:14px;">
 <?php
-    include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/top_menu.php";
+    include $_SERVER['DOCUMENT_ROOT']."/admin/include/top_menu.php";
 ?>
 <div id="container" style="padding-left:194px;">
 <?php
-    include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/left_menu.php";
+    include $_SERVER['DOCUMENT_ROOT']."/admin/include/left_menu.php";
 ?>
 
 
@@ -218,7 +218,7 @@ if ( $rs->num_rows > 0 ) {
 </script>
 
 <?php
-include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/footer.php";
+include $_SERVER['DOCUMENT_ROOT']."/admin/include/footer.php";
 
 @ $rs->free();
 ?>

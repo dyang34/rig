@@ -1,11 +1,11 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/payouts/PayoutsMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/Page.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/payouts/PayoutsMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/Page.php";
 
 /*
  $currentPage = RequestUtil::getParam("currentPage", "1");
@@ -17,7 +17,7 @@ $wallet_addr = LoginManager::getUserLoginInfo("rm_wallet_addr");
 
 if (empty($userid) || empty($wallet_addr) || !LoginManager::isUserLogined()) {
     //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
-    JsUtil::alertReplace("로그인이 필요합니다.    ","/rig");
+    JsUtil::alertReplace("로그인이 필요합니다.    ","/");
 }
 
 $wq = new WhereQuery(true, true);
@@ -95,8 +95,8 @@ $wq->addOrderBy("paidOn","desc");
 //$rs = PayoutsMgr::getInstance()->getListPerPage($wq, $pg);
 $rs = PayoutsMgr::getInstance()->getList($wq);
 
-include $_SERVER['DOCUMENT_ROOT']."/rig/include/head.php";
-include $_SERVER['DOCUMENT_ROOT']."/rig/include/top_menu.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/top_menu.php";
 ?>
 <div class="M_tab main_T_B page-wrapper" style="padding-top:67px;">
 	<div class="page-content clearfix">
@@ -185,8 +185,8 @@ if ( $rs->num_rows > 0 ) {
 	</div>
 </div>
 <?php
-include $_SERVER['DOCUMENT_ROOT']."/rig/include/bottom.php";
-include $_SERVER['DOCUMENT_ROOT']."/rig/include/footer.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/bottom.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 
 @ $rs->free();
 ?>

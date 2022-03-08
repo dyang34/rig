@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/member/MemberMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/basic/BasicDataMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/member/MemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/basic/BasicDataMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
 $p_group_code = RequestUtil::getParam("p_group_code", "2");
 

@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 
@@ -25,7 +25,7 @@ if(!empty($rtnUrl)) {
     $rtnUrl = urldecode($rtnUrl);
 }
 
-include $_SERVER['DOCUMENT_ROOT']."/rig/include/head_no_menu.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/head_no_menu.php";
 ?>
     <body style="background-color: #e1d8d88c;">
         <div class="bit_wrapper">
@@ -99,7 +99,7 @@ document.autoLoginForm.submit();
 }
 ?>
         
-<script src="/rig/cms/js/util/ValidCheck.js"></script>
+<script src="/cms/js/util/ValidCheck.js"></script>
 <?php /*
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 */?>
@@ -151,5 +151,5 @@ $(function(){
 
     </body>
 <?php 
-    include $_SERVER['DOCUMENT_ROOT']."/rig/include/footer.php";
+    include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 ?>

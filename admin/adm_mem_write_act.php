@@ -1,15 +1,15 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/UpdateQuery.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/member/MemberMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/payouts/PayoutsMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/member/MemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/payouts/PayoutsMgr.php";
 
 if(!LoginManager::isManagerLogined()) {
-    JsUtil::alertReplace("로그인이 필요합니다.    ","/rig/admin");
+    JsUtil::alertReplace("로그인이 필요합니다.    ","/admin");
     exit;
 }
 

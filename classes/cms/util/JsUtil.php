@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/RequestUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/RequestUtil.php";
 
 class JsUtil
 {

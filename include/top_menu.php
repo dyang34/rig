@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 ?>    
     <body style="background: #e1d8d854;" >
         <!-- wrap -->
@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php"
                 <div class="headerInner clearfix">
                     <span>
                         <span style="float: left; margin-top: 15px;">
-                            <img src="../rig/images/common/personW.png" alt="" width="40" height="40" />
+                            <img src="../images/common/personW.png" alt="" width="40" height="40" />
                         </span>
                         <span style="font-size: 14px; margin: 24px 0 0 7px; float: left; color: #fff;">
                             <span style=" font-size: 16px; font-weight: 600; margin-right: 1px; vertical-align: bottom;"><?=LoginManager::getUserLoginInfo("rm_name")?></span>

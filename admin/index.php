@@ -1,10 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 
-include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/head.php";
+include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
 ?>
 
 	<body class="login_wrap">
@@ -25,7 +25,7 @@ include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/head.php";
 			</div>
 		</div>
         
-<script src="/rig/cms/js/util/ValidCheck.js"></script>
+<script src="/cms/js/util/ValidCheck.js"></script>
 <?php /*
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 */?>
@@ -65,5 +65,5 @@ function login_submit(){
 
     </body>
 <?php 
-    include $_SERVER['DOCUMENT_ROOT']."/rig/admin/include/footer.php";
+    include $_SERVER['DOCUMENT_ROOT']."/admin/include/footer.php";
 ?>

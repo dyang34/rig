@@ -18,7 +18,7 @@
                         <li>[회원코드]</li>
                         <li style="margin-right:10px;">[회원명]</li>
 */?>
-                        <li><a href="/rig/admin/admin_logout.php">Logout</a></li>
+                        <li><a href="/admin/admin_logout.php">Logout</a></li>
                     </ul>
                     
                 </div>

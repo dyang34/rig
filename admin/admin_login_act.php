@@ -1,10 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/common/blm_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/JsUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/admin/AdmMemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/AdmMemberMgr.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 $mode = RequestUtil::getParam("mode", "");
@@ -46,7 +46,8 @@ if($mode=="login"){
         $row["passwd"] = "";
         LoginManager::setManagerLogin($row);
         
-        $rtnUrl = "/rig/admin/adm_mem_list.php";
+        //$rtnUrl = "/admin/adm_mem_list.php";
+        $rtnUrl = "/branch.php";
 
         JsUtil::replace($rtnUrl);
         

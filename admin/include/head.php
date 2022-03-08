@@ -16,7 +16,7 @@ header("Content-Type:text/html; charset=utf-8");
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="robots" content="noindex">  <!-- 검색엔진로봇 수집 차단. -->
         
-        <link type="text/css" rel="stylesheet" href="/rig/admin/css/table_style.css?t=<?php echo time(); ?>" />
+        <link type="text/css" rel="stylesheet" href="/admin/css/table_style.css?t=<?php echo time(); ?>" />
         
-        <script type="text/javascript" src="/rig/js/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
     </head>

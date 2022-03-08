@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/rig/basic/BasicDataDao.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/A_Mgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/DbUtil.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/basic/BasicDataDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
 class BasicDataMgr extends A_Mgr
 {

@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/db/A_Dao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Dao.php";
 
 class UpdateQuery extends A_Dao
 {

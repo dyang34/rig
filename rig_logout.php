@@ -1,5 +1,5 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/CookieUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/CookieUtil.php";
 
     CookieUtil::removeCookieMd5("blm_ck_auto");
     CookieUtil::removeCookieMd5("blm_ck_userid");
@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/util/CookieUtil.php";
 
 	session_destroy();
 	
-	header("Location: http://".$_SERVER[SERVER_NAME]."/rig");
+	header("Location: http://".$_SERVER[SERVER_NAME]."/");
 ?>
 <html>
     <head></head>

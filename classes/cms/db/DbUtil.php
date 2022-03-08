@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT']."/rig/classes/cms/CmsConfig.php";
+include $_SERVER['DOCUMENT_ROOT']."/classes/cms/CmsConfig.php";
 
 class DbUtil
 {
