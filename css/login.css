@@ -1,0 +1,39 @@
+.underlineHover { color: #777; display:inline-block; text-decoration: none; font-weight: 400; }
+.bit_active { text-align: center; font-size: 16px; font-weight: 600; text-transform: uppercase; display:inline-block; margin: 35px 8px 18px 8px;  color: #cccccc; }
+.bit_wrapper { display: flex; align-items: center; flex-direction: column; justify-content: center; width: 100%; min-height: 100%; padding: 20px; font-family: "Poppins", sans-serif; height: 100vh; }
+#bit_formContent { -webkit-border-radius: 10px 10px 10px 10px; border-radius: 10px 10px 10px 10px; background: #fff; padding: 30px; width: 90%; max-width: 450px; position: relative; padding: 0px; -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,21%); box-shadow: 0 30px 60px 0 rgba(0,0,0,21%); text-align: center; }
+#formFooter { background-color: #f6f6f6; border-top: 1px solid #dce8f1; padding: 25px; text-align: center; -webkit-border-radius: 0 0 10px 10px; border-radius: 0 0 10px 10px; }
+h2.inactive { color: #cccccc; }
+h2.bit_active { color: #0d0d0d; }
+.bit_login  { background-color: #fb8113; border: none; color: white; padding: 15px 80px; text-align: center; text-decoration: none; display: inline-block; text-transform: uppercase; font-size: 13px; -webkit-box-shadow: 0 10px 30px 0 rgba(0,0,0,20%); box-shadow: 0 10px 30px 0 rgba(0,0,0,24%); -webkit-border-radius: 5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; margin: 7px 20px 40px 20px; }
+.bit_login:active, .bit_input[type=submit]:active, .bit_input[type=reset]:active  { -moz-transform: scale(0.95); -webkit-transform: scale(0.95); -o-transform: scale(0.95); -ms-transform: scale(0.95); transform: scale(0.95); }
+.bit_input[type=text] { background-color: #f6f6f6; border: none; color: #0d0d0d; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 5px; width: 85%; border: 2px solid #f6f6f6; -webkit-border-radius: 5px 5px 5px 5px; border-radius: 5px; }
+.bit_input[type=text]:placeholder { color: #cccccc; }
+@-webkit-keyframes fadeIn { from { transform:translateY(80px); opacity: 0; } to { transform:translateY(0); opacity: 1; } }
+@-moz-keyframes fadeIn { from {transform:translateY(80x); opacity: 0; } to { transform:translateY(0); opacity: 1; } }
+@keyframes fadeIn { from { transform:translateY(80px); opacity: 0; } to { transform:translateY(0); opacity: 1; } }
+
+.fadeIn { -webkit-animation:fadeIn ease-in .5s; -moz-animation:fadeIn ease-in .5s; animation:fadeIn ease-in .5s;  -webkit-animation-fill-mode:backwards; -moz-animation-fill-mode:backwards; animation-fill-mode:backwards; }
+
+.fadeIn.fir { -webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s; }
+.fadeIn.second { -webkit-animation-delay: .25s; -moz-animation-delay: .25s; animation-delay: .25s; }
+.fadeIn.third { -webkit-animation-delay: .3s; -moz-animation-delay: .3s; animation-delay: .3s; }
+.fadeIn.fourth { -webkit-animation-delay: .35s; -moz-animation-delay: .35s; animation-delay: .35s; }
+*:focus { outline: none; }
+#icon { width:60%; }
+.custom-form .form-group { position: relative; padding-top: 15px; margin-bottom: 16px; width: 85%; height: 55px; margin: 0 auto; background-color: #f6f6f6; border-radius: 5px; }
+.custom-form .form-group .animated-label { position: absolute; top: 18px; left: 50%;  transform: translate(-50%,0); bottom: 0; z-index: 2; width: 98%; opacity: 0.5; /*cursor: text;*/ transition: 0.2s ease all; margin: 0; -webkit-user-select: none; -moz-user-select: none; user-select: none;  color: #0d0d0d; }
+.custom-form .form-group .animated-label:after { content: ""; position: absolute; bottom: 0; left: 45%; height: 2px; width: 10px; visibility: hidden; background-color: #fb8113; transition: 0.2s ease all; }
+.custom-form .form-group .form-control { position: relative; z-index: 1; border-radius: 0; border-width: 0 0 1px; border-bottom-color: rgba(0, 0, 0, 0.25); /* height: auto; */ padding: 3px 0 5px; background-color: transparent; text-align: center; margin: 0 auto; display: block; width: 200px; height: 30px;}
+.custom-form .form-group .form-control:focus { box-shadow: none; border-bottom-color: rgba(0, 0, 0, 0.12); }
+.custom-form .form-group .form-control:focus ~ .animated-label { opacity: 1; color: #7b868d; }
+.custom-form .form-group .form-control:focus ~ .animated-label:after { visibility: visible; width: 100%; left: 0; }
+
+/*자동로그인*/
+.bit_wrapper .bit_checks { position: relative; width: 85%; margin:10px auto 8px; text-align: left; }
+.bit_checks input[type="checkbox"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.bit_checks input[type="checkbox"] + label { display: inline-block; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; margin-left: 2px; font-size: 13px; margin-right: 15px; }
+.bit_checks input[type="checkbox"] + label:before { content: ''; display: inline-block; width: 21px; height: 21px; line-height: 21px; margin: -2px 8px 0 0; text-align: center; vertical-align: middle; background: #fafafa; border: 1px solid #cacece; border-radius: 50%; box-shadow: 0px 1px 2px rgb(0 0 0 / 5%), inset 0px -15px 10px -12px rgb(0 0 0 / 5%); }
+.bit_checks input[type="checkbox"]:checked + label:before { content: ''; background: url(/rig/images/common/check.png) no-repeat center; background-color: #fb8113; background-size: 12px 12px; color: #99a1a7; border-color: #fb8113; box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1); }
+
+.bit_logTit { font-family: "Spoqa-Regular", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif; font-weight:500; font-size: 14px;}

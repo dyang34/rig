@@ -1,0 +1,97 @@
+.not-scroll { position: fixed; overflow: hidden; width: 100%; height: 100%; }
+.page-wrapper .page-content { display: inline-block; width: 100%; padding:13px 10px 20px; }
+.page-wrapper .page-content { /*  overflow-x: hidden;*/ }
+.btn-dark { color: #fff; background-color: #343a40; border-color: #343a40; }
+.bit_display{ width:98%; margin:0 auto; width:100%; table-layout: fixed; background-color: #fff; }
+.bit_display th,
+.bit_display td{ padding:12px 10px 12px 16px; line-height:16px; border-bottom:1px solid #dadada; text-align: center; vertical-align: middle; font-weight: 300; font-size: 12px; color: #333; }
+.bit_display thead th { background:#cec7c7; font-weight:500; font-size: 14px; }
+.bit_display .first{ border-left:none; }
+.bit_display .tbl_first {border-left:0; }
+table tbody tr:nth-child(odd) { background-color: #f9f9f9; }
+.bit_content_Tit.fixed { position: sticky; left: 0; top: 206px; z-index: 100; transform: translateZ(0); -webkit-transform: translateZ(0);}
+.bit_not_cal.fixed { position: sticky; left: 0; top: 146px; z-index: 100; transform: translateZ(0); -webkit-transform: translateZ(0); }
+
+.menu_tab { padding:10px; height: 77px; position: relative; }
+.menu_tab ul { position: relative; display: block; border-radius: 30px; background-color: #f2f2f2; height: 57px; border: 1px solid #bfbaba; }
+.menu_tab ul li { float:left; width:50%; position: relative; transition: all 0.2s ease-in-out;}
+.menu_tab ul li.active a { background:#fff; border: 1px solid #333; color:#333; }
+.menu_tab ul li a { display: block; text-align:center; line-height:54px; border-radius:30px; font-size:16px; font-weight:500; border: 1px solid transparent; transition: all 0.2s ease-in-out; }
+
+.bit_header { position:relative; top:0; left:0; right:0;  width:100%; height:70px; z-index:90; background: #f97c0c; }
+.bit_header.fixed { transition:.5s; width:100%; position:fixed; left:0; top:0; z-index:100; transform:translateZ(0); -webkit-transform:translateZ(0); }
+.bit_header.fixed .menu_tab { box-shadow: 0 11px 10px #e6e6e6; background: #fff; border-bottom:1px solid #796061;}
+.headerInner { position:relative; width: 88%; margin:0 auto; height: 70px; }
+.btn_nav { position:absolute; right:0; top:25px; width:30px; height:20px; z-index:200; }
+.btn_nav span { display:block; background-color:#fff; width:30px; height:4px; text-indent:-9999px; overflow:hidden; transition:.3s; }
+.btn_nav span:nth-child(2) { margin:4px 0; }
+.btn_nav.on { top:23px; }
+.btn_nav.on span { position:absolute; /*right:0.872%;*/ }
+.btn_nav.on span:nth-child(2) { display:none; }
+.btn_nav.on span:nth-child(1) { transform:rotate(45deg); }
+.btn_nav.on span:nth-child(3) { transform:rotate(-45deg); }
+.bit_topmenu.active { display:block; }
+.bit_topmenu { display:none; position:fixed; left:0; top:0; width:100%; height:100%; background-color:#a79999; z-index: 99; }
+.navInner { padding:70px 4.133%; }
+.navInner .gnb { padding:20px 0; border-top:2px solid #735444; border-bottom:1px solid #735444; }
+.navInner .gnb > li > a { position:relative; display:block; height:53px; line-height:53px; margin-left:25px; font-size:1.7rem; font-weight:500; color:#fff; }
+.navInner .gnb > li > a:after { position:absolute; top:50%; right:25px; content:""; display:block;  width:9px; height:9px; border-top:2px solid #fff;  border-right:2px solid #fff;  transform:rotate(45deg); margin-top:-7px; }
+
+/* 수치 */
+.bit_cal { width: 100%; height: 60px; border-top: 1px solid #796061; padding-top: 7px; white-space: nowrap; text-align: center; background: rgb(255 255 255); }
+.bit_calInner>p { width: 33.3%; display: inline-block; float: left;/* margin: 0 10px;*/ }
+.bit_cal .bit_calInner .bit_cal_Tit { font-size: 13px; margin-bottom: 1px; }
+.bit_cal .bit_calInner .bit_subCal { font-size: 14px; font-weight: bold; }
+.bit_cal .bit_calInner .bit_cal_red { color: #e43501; }
+.bit_calInner>p>span { display: block; }
+.bit_cal.fixed { width: 100%; position: sticky; left: 0; top: 147px; z-index: 100; transform: translateZ(0); -webkit-transform: translateZ(0); border-top:0; border-bottom: 2px solid #796061;}
+
+/* password */
+.bit_active { /*width:100%;*/text-align: center; font-size: 16px; font-weight: 600; text-transform: uppercase; margin: 30px auto 40px; }
+.blm_psw { padding: 5px 7px;/*5px 10px;*/ box-sizing: border-box; }
+.blm_Psw_input { letter-spacing:0; font-size:16px; position: relative; width: 100%; margin: 0 auto; border-radius: 10px; box-sizing: border-box; /*box-shadow: 0px 2px 10px #d3d2d2;*/ display: flex; align-items: center; flex-direction: column; justify-content: center; min-height: 100%; padding: 20px; height: 100vh; }
+.blm_Psw_input .blm_pswInp { padding:18px 11px 38px; box-sizing: border-box; }
+.blm_Psw_input .blm_pswInp li { position: relative; display:-webkit-box; display:-webkit-flex; display:-ms-flexbox; display:flex; margin-top:30px; box-sizing: border-box; }
+.blm_Psw_input .blm_pswInp li:nth-child(1) { margin-top:0; box-sizing: border-box; }
+.bit_pwTit { position: absolute; top: -24px; left: 7px; bottom: 0; z-index: 2; width: 100%; font-weight: 300; cursor: text; margin: 0; color: #333; font-size: 13px; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+.blm_pswInp input[type='password'] { height:43px; padding:0 12px; background:#fff; border:1px solid #ddd; color:#000; font-size:16px; box-sizing:border-box; }
+.blm_pswInp li input:not([type='checkbox']) { display:block; width:100%; -webkit-box-flex:1; flex:1; color:#333; border-radius:5px; box-sizing: border-box; }
+.blm_pswInp li input::placeholder { color: #959595; font-size: 14px; }
+.blm_pswInp .text_guide { margin: 8px 6px 16px; }
+.blm_pswInp .text_guide p { position: relative; padding-left: 12px; color: #666; font-size: 13px; line-height: 24px; }
+.blm_pswInp .text_guide p:before { content: ""; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; background-color: #666; border-radius: 50%; }
+.blm_pswInp li .blm_Pbtn { width:100%; height:45px; line-height:45px; background:#fb8113; color:#fff; border-radius:4px; text-align:center; box-sizing: border-box; }
+
+.bit_delbtn {     position: absolute;
+    right: 10px;
+    top: 29px;
+    width: 30px;
+    height: 20px;
+    z-index: 200; }
+.bit_delbtn span { display: block;
+    background-color: #565555;
+    width: 27px;
+    height: 3px;
+    text-indent: -9999px;
+    overflow: hidden;
+    transition: .3s;position: absolute;
+    /* right: 0.872%;*/transform: rotate(-45deg);}
+.bit_delbtn span:nth-child(1) { transform: rotate(45deg);}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
