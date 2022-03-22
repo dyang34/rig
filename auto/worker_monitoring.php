@@ -2,14 +2,30 @@
 require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/member/MemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/worker/WorkerMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/basic/BasicDataMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
-$p_group_code = RequestUtil::getParam("p_group_code", "2");
+$p_group_code = RequestUtil::getParam("p_group_code", "1");
 
 $row_basic_data = BasicDataMgr::getInstance()->getByKey("HASHRATE_1");
 
 $hashrate_min1 = $row_basic_data["data_val"];
+
+$wq = new WhereQuery(true, true);
+//$wq->addAndString("rm_wallet_addr","=",$wallet_addr);
+$wq->addAndString2("rw_fg_del","=","0");
+
+$rs_worker = WorkerMgr::getInstance()->getList($wq);
+
+$arrWorker = array();
+if ( $rs->num_rows > 0 ) {
+    for ( $i=0; $i<$rs->num_rows; $i++ ) {
+        $row = $rs->fetch_assoc();
+        
+        array_push($arrWorker, $row["userid"]."||".$row["worker"]);
+    }
+}
 
 $wq = new WhereQuery(true, true);
 //$wq->addAndString("rm_wallet_addr","=",$wallet_addr);
@@ -46,6 +62,24 @@ if ( $rs->num_rows > 0 ) {
             if (count($arr["data"]["workers"]) > 0) {
 
                 for($j=0;$j<count($arr["data"]["workers"]);$j++) {
+                    
+                    if (!in_array($row["userid"]."||".$arr["data"]["workers"][$j]["worker"])) {
+                        $arrIns = array();
+                        
+                        
+                        $arrIns["userid"] = $row["userid"];
+                        $arrIns["rm_name"] = $row["rm_name"];
+                        $arrIns["rm_wallet_addr"] = $row["rm_wallet_addr"];
+                        $arrIns["worker"] = $arr["data"]["workers"][$j]["worker"];
+                        $arrIns["time"] = $arr["data"]["workers"][$j]["time"];
+                        $arrIns["lastSeen"] = $arr["data"]["workers"][$j]["lastSeen"];
+                        $arrIns["reportedHashrate"] = $arr["data"]["workers"][$j]["reportedHashrate"];
+                        $arrIns["currentHashrate"] = $arr["data"]["workers"][$j]["currentHashrate"];
+                        $arrIns["validShares"] = $arr["data"]["workers"][$j]["validShares"];
+                        $arrIns["invalidShares"] = $arr["data"]["workers"][$j]["invalidShares"];
+                        
+                        WorkerMgr::getInstance()->add($arrIns);
+                    }
                     
                     if ($arr["data"]["workers"][$j]["reportedHashrate"]<=$hashrate_min1) {
                         echo $row["rm_name"]." : ".$row["rm_wallet_addr"]."<br/>";
