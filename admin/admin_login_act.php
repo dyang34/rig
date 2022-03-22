@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/AdmMemberMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/admin/AdmMemberMgr.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 $mode = RequestUtil::getParam("mode", "");
@@ -47,7 +47,7 @@ if($mode=="login"){
         LoginManager::setManagerLogin($row);
         
         //$rtnUrl = "/admin/adm_mem_list.php";
-        $rtnUrl = "/branch.php";
+        $rtnUrl = "./branch.php";
 
         JsUtil::replace($rtnUrl);
         
