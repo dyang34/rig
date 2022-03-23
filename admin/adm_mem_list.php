@@ -184,6 +184,10 @@ if ( $rs->num_rows > 0 ) {
 		<div style="position: absolute; right: 17px; bottom: 3px; text-align: center; line-height: 30px; border-radius: 10px; background-color: #313A3D;" class="rig_new"><a href="./adm_mem_write.php" style="display:inline-block;padding: 5px 22px;color: #fff;">등록하기</a></div>
 	</div>
 
+<?php /*
+	<a href="#none" onclick="javascript:goPageTop();"  style="position: fixed; right: 31px; bottom: 31px; width: 67px; height: 67px; line-height: 70px; background-color: #313A3D; border: none; border-radius: 50%; z-index: 999; box-sizing: border-box; color: #fff; letter-spacing: .3px; text-align: center;">TOP<img src="/ism/images/common/top.png" alt="" style=" margin: -2px 0 0 2px;"/></a>
+*/?>
+
 <?php
 } else {
     echo "<div style='text-align:center;padding:20px;'>No Data</div>";
