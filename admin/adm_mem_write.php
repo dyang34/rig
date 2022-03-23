@@ -11,6 +11,9 @@ if(!LoginManager::isManagerLogined()) {
     exit;
 }
 
+$menuCate = 1;
+$menuNo = 1;
+
 $mode = RequestUtil::getParam("mode", "INS");
 $userid = RequestUtil::getParam("userid", "");
 
@@ -34,14 +37,7 @@ if ($mode=="UPD") {
 }
 
 include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
-?>
-<body style="font-family: 'Noto Sans KR', sans-serif; line-height:1; font-size:14px;">
-<?php
-    include $_SERVER['DOCUMENT_ROOT']."/admin/include/top_menu.php";
-?>
-    <div id="container" style="padding-left:194px;">
-<?php
-        include $_SERVER['DOCUMENT_ROOT']."/admin/include/left_menu.php";
+include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
 ?>
             <div class="gp_rig_search">
                 <div style="padding-left:20px;">
@@ -148,9 +144,9 @@ if ($mode=="UPD") {
 */?>
                         </tbody>
                     </table>
-                    </form>
+				</form>
 				<!-- 취소/등록 버튼 START -->
-                <div style="cursor: pointer; overflow: hidden; display: flex; display: -webkit-flex; -webkit-align-items: center; align-items: center; flex-direction: inherit; justify-content: center; margin-top: 9px;">
+                <div style="overflow: hidden; display: flex; display: -webkit-flex; -webkit-align-items: center; align-items: center; flex-direction: inherit; justify-content: center; margin-top: 9px;">
                     <div class="wrt_searchBtn">
                         <a href="#" name="btnCancel">취소</a>
                     </div>
@@ -170,11 +166,6 @@ if ($mode=="UPD") {
 				<!-- 취소/등록 버튼 END -->
 			</div>
 			<!-- 202112123 등록하기(e) -->
-
-
-
-
-	</div>
 
 <script src="/cms/js/util/ValidCheck.js"></script>	
 <script type="text/javascript">

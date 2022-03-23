@@ -18,7 +18,7 @@ class MemberDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+		$sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 			 ." from rig_member "
 			 ." where userid = ".$this->quot($db, $key)
 		 	 ;
@@ -35,7 +35,7 @@ class MemberDao extends A_Dao
 
 	function selectByKeyDetail($db, $key) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 	       ." from rig_member a "
 	       ." where userid = ".$this->quot($db, $key)
         ;
@@ -52,7 +52,7 @@ class MemberDao extends A_Dao
 	
 	function selectByKeyDetail2($db, $key) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
             ." from rig_member a "
             ." where userid = ".$this->quot($db, $key)
         ;
@@ -69,7 +69,7 @@ class MemberDao extends A_Dao
 	
 	function selectByKeyForLogin($db, $key) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 	        ." from rig_member "
             ." where userid = ".$this->quot($db, $key)
         ;
@@ -86,7 +86,7 @@ class MemberDao extends A_Dao
 	
 	function selectFirst($db, $wq) {
 
-		$sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+		$sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 			 ." from rig_member"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -105,7 +105,7 @@ class MemberDao extends A_Dao
 	function selectFirstForLogin($db, $wq) {
 	    
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 	        ." from rig_member"
             .$wq->getWhereQuery()
         ;
@@ -123,7 +123,7 @@ class MemberDao extends A_Dao
 	
 	function select($db, $wq) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 	         ." from rig_member"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -134,7 +134,7 @@ class MemberDao extends A_Dao
 	
 	function selectForSupply($db, $wq) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
 	        ." from rig_member a "
             .$wq->getWhereQuery()
             .$wq->getOrderByQuery()
@@ -145,7 +145,7 @@ class MemberDao extends A_Dao
 	
 	function selectForSupplyDetail($db, $wq) {
 	    
-	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	    $sql =" select userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
             ." from rig_member a "
             .$wq->getWhereQuery()
             .$wq->getOrderByQuery()
@@ -157,7 +157,7 @@ class MemberDao extends A_Dao
 	function selectPerPage($db, $wq, $pg) {
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			 ."		select @rnum:=0, userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, (select sum(cast(amount as signed)) from rig_payouts rp where rp.userid = m.userid) as amount "
+			 ."		select @rnum:=0, userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate, (select sum(cast(amount as signed)) from rig_payouts rp where rp.userid = m.userid) as amount "
 			 ."		from rig_member m "
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -172,7 +172,7 @@ class MemberDao extends A_Dao
 	    
 	    // 리뷰의 경우 작성자 체크(자신의 것은 비노출이라도 무조건 보인다)를 적용하지 않음.
 	    $sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-	        ."		select @rnum:=0, userid, rm_name, rm_wallet_addr, rm_last_login, reg_date "
+	        ."		select @rnum:=0, userid, rm_name, rm_wallet_addr, rm_last_login, reg_date, rm_fg_avg_hashrate "
             ."		from rig_member a "
             .$wq->getWhereQuery()
             .$wq->getOrderByQuery()

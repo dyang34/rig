@@ -1,0 +1,64 @@
+.ism-float-wrap { overflow: hidden; padding: 0 20px; }
+.ism-float-wrap h3 { padding-left: 10px; font-size: 18px; line-height: 1.2em; padding-left: 22px; background: url(/admin/images/common/bl_chk.png) no-repeat left 4px; margin-bottom: 20px; position: relative; }
+input[type="button"], button, a.button { display: inline-block; height: 30px; border: 0; font-size: 12px; padding: 0 15px; background: #4b4b4b; color: #fff; cursor: pointer; text-align: center; }
+input[type="button"].plain, button.plain { line-height: normal; height: auto; border: 0; padding: 0; background: none; outline: 0; cursor: pointer; color: #4b4b4b; }
+.adm-category-box { border: 1px solid #aaa; padding: 9px; height: 550px; overflow: auto; }
+.align-r { text-align: right !important; }
+.btn-icon { width: 25px; height: 25px !important; line-height: 25px !important; padding: 0 !important; text-align: center; }
+.float-r { float: right; }
+.adm-table .file { position: relative; float: left; width: 600px; height: 29px; padding-right: 80px; margin-right: 7px; border: 1px solid #ccc; color: #aaa; font-size: 12px; line-height: 28px; }
+.adm-table .file input[type="file"] { position: absolute; right: -1px; top: -1px; width: 80px; height: 30px; opacity: 0; filter: alpha(opacity=0); -ms-filter: alpha("opacity=0"); }
+.adm-table .file input[type="file"] + label { position: absolute; display: block; right: -1px; top: -1px; width: 80px; height: 30px; line-height: 30px; text-align: center; font-size: 12px; }
+.adm-table input[type="file"] + label { color: #fff; background: #768d9d; }
+.adm-table .file-name { display: block; height: 28px; line-height: 28px; padding-left: 5px; }
+.adm-table .file-name1 { display: block; height: 28px; line-height: 28px; padding-left: 5px; }
+
+/*category2*/
+.ism_menu { padding: 0; list-style: none; width: 100%; clear: both; display: table; letter-spacing: -.4px; }
+.ism_menu .list { font-size: 14px; position: relative; width: 100%; box-sizing: border-box; vertical-align: sub; clear: both; }
+.ism_menu .sub_list { font-size: 14px; position: relative; width: 100%; box-sizing: border-box; vertical-align: sub; clear: both; }
+.ism_menu .list a { text-decoration: none; padding: 7px 0px 7px 49px; display: block; height: 100%; box-sizing: border-box; }
+.ism_menu .list .items { height: 0px; overflow: hidden; }
+.ism_menu .list:last-child { border-bottom: none; }
+
+.ism_menu .items { display: block; padding: 0px; height: auto; clear: both; float: left; width: 100%; }
+.ism_menu .items li { padding: 0px; list-style: none; position: relative; }
+.ism_menu .items li:last-child { border-color: transparent; padding-bottom: 0px; }
+/*
+.ism_menu .list a input[type="button"] { width: 50px; height: 19px; margin-left: 10px; border: 1px solid #ccc; padding: 0; background: #fff url(../m/image/common/add_item.gif) no-repeat center; text-indent: -99999px; }
+*/
+.cate_view .adm-table th { width: 17%; padding: 13px 0; }
+.adm-table textarea { border: 1px solid #ccc; padding: 5px; resize: vertical; width: 97.8%; outline: none; }
+.btn-sm { height: 25px !important; line-height: 24px !important; font-size: 11px !important; }
+.btn-alert { background: #CC6262 !important; }
+.ft-red { color: #D72424 !important; }
+
+.adm-category-box ul li input[type='checkbox'] { display: none; }
+.adm-category-box ul li label { display: block; padding: 7px 0px 7px 46px; text-transform: uppercase; font-weight: bold; position: relative; overflow: hidden; line-height: 20px; }
+.adm-category-box ul li .arw { transition-duration: .1s; transition-timing-function: linear; background: url(/admin/images/common/bl_rt_down.png) no-repeat 1px center; position: absolute; right: 17px; top: 27%; width: 16px; height: 16px; border-radius: 50%; }
+.adm-category-box ul li .folder { transition-duration: .1s; transition-timing-function: linear; background: url(/admin/images/common/folder_1.png) no-repeat 1px center; position: absolute; left: 16px; top: 19%; width: 24px; height: 20px; z-index: 11; background-size: 20px; }
+.ism_menu .sub_list .folder { left: 44px; }
+.adm-category-box ul li label:hover { background: #aec7db; }
+.adm-category-box ul li input[type='checkbox']:checked ~ label { color: #000; }
+.adm-category-box ul li input[type='checkbox']:checked ~ label .arw { transition: all .2s; background-image: url(/admin/images/common/bl_rt_down.png); transform: rotate(-180deg); right: 19px; }
+.adm-category-box ul li input[type='checkbox']:checked ~ label .folder { transition: all .2s; background-image: url(/admin/images/common/folder.png); border-color: #fff; }
+.adm-category-box ul li input[type='checkbox']:checked ~ .options {	height: auto; display:block; /*min-height:40px; max-height:400px;*/ }
+.adm-category-box ul ul { background:#fff; margin:0; padding:0; }
+.adm-category-box ul ul li a { display:block; padding:6px 12px; color:#7c7c7c; text-decoration:none; }
+.adm-category-box ul ul li a:hover { color:#6885a5; transition: all .01s; }
+.adm-category-box ul ul li a span { color:#7c7c7c; background:none; border:1px solid #ccc; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
+.options { height: 0; display: block; overflow: hidden; }
+.adm-category-box ul .sub_list label { padding-left: 77px; }
+/*.adm-category-box ul .sub_list ul { padding-left: 29px; }*/
+
+.adm-category-box ul li label .btn_inner { width: 50px; height: 19px; margin-left: 3px; border: 1px solid #ccc; padding: 0; float: left; background: #fff; text-align: center; line-height: 14px;}
+.adm-category-box ul li.sub_list label { padding: 7px 0px 7px 76px; }
+.adm-category-box ul li.sub_list .folder { left: 46px;/* background-image: url(/admin/images/common/folder.png);*/ }
+
+.adm-category-box ul.ism_dep2 li label { padding: 7px 0px 7px 107px; }
+.adm-category-box ul.ism_dep2 li .folder { left: 77px; }
+.adm-category-box ul.ism_dep2 li ul.ism_dep3 li label { padding: 7px 0px 7px 137px; }
+.adm-category-box ul.ism_dep2 li ul.ism_dep3 li .folder { left: 107px; }
+/* .adm-category-box ul li.depth_last_list .folder { background-image: url(/admin/images/common/folder.png); } */
+.folder_close { background-image: url(/admin/images/common/folder.png) !important; }
+.adm-category-box .btn_wrap { float: right; margin-right: 13px; }
