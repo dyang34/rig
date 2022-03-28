@@ -1,5 +1,10 @@
 <?php 
-	session_start();
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/CookieUtil.php";
+
+CookieUtil::removeCookieMd5("rig_adm_ck_auto");
+CookieUtil::removeCookieMd5("rig_adm_ck_userid");
+
+    session_start();
 
 	header("Pragma:no-cache");
 	header("Cache-Control;no-cache");

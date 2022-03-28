@@ -4,6 +4,27 @@ require_once $_SERVER['DOCUMENT_ROOT']."/common/blm_default_set.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 
+$rtnUrl = RequestUtil::getParam("rtnUrl", "");
+
+$rig_adm_ck_auto = CookieUtil::getCookieMd5("rig_adm_ck_auto");
+$rig_adm_ck_userid = CookieUtil::getCookieMd5("rig_adm_ck_userid");
+
+if(!$rig_adm_ck_auto) $rig_adm_ck_auto = "";
+
+if (LoginManager::isManagerLogined() && !empty(LoginManager::getManagerLoginInfo("rm_wallet_addr"))) {
+    if (!empty($rtnUrl)) {
+        JsUtil::replace($rtnUrl);
+        exit;
+    } else {
+        $rtnUrl = "./branch.php";
+        exit;
+    }
+}
+
+if(!empty($rtnUrl)) {
+    $rtnUrl = urldecode($rtnUrl);
+}
+
 include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
 ?>
 
@@ -17,6 +38,10 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
                 
                 	<input type="text" name="userid" id="userid" class="fadeIn second" placeholder="login" />
 					<input type="password" name="passwd"  id="passwd" class="fadeIn third" />
+					<div class="bit_checks fadeIn third">
+                        <input type="checkbox" id="nologin" name="ck_auto" value="1"><label for="nologin">자동로그인</label>
+                    </div>
+					
 					<input type="button" class="fadeIn fourth" value="LogIn" onClick="javascript:login_submit();return false;">
 				</form>
 				<div id="formFooter">
@@ -25,6 +50,25 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
 			</div>
 		</div>
         
+<?php
+if ($rig_adm_ck_auto=="rig_adm_auto_login" && !empty($rig_adm_ck_userid)) {
+    echo "aaa";
+?>
+
+<form name="autoLoginForm" method="post" action="./admin_login_act.php">
+	<input type="hidden" name="mode" value="autologin" />
+	<input type="hidden" name="auto_defense" value="identicharmc!@" />
+    <input type="hidden" name="rtnUrl" value="<?=urlencode($rtnUrl)?>" />
+    <input type="hidden" name="userid" value="<?=$rig_adm_ck_userid?>" />
+</form>
+
+<script type="text/javascript">
+document.autoLoginForm.submit();
+</script>
+
+<?php 
+}
+?>        
 <script src="/cms/js/util/ValidCheck.js"></script>
 <?php /*
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
