@@ -126,6 +126,8 @@ $duration = 24 * 60 * 60 * 30;  // 30일
 ini_set('session.gc_maxlifetime', $duration);
 session_set_cookie_params($duration);
 
+date_default_timezone_set('Asia/Seoul');
+
 header("Cache-Control;no-cache");
 header("Pragma:no-cache");
 header("Content-Type:text/html; charset=utf-8");
