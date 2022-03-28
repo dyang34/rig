@@ -11,12 +11,13 @@ $rig_adm_ck_userid = CookieUtil::getCookieMd5("rig_adm_ck_userid");
 
 if(!$rig_adm_ck_auto) $rig_adm_ck_auto = "";
 
-if (LoginManager::isManagerLogined() && !empty(LoginManager::getManagerLoginInfo("rm_wallet_addr"))) {
+if (LoginManager::isManagerLogined()) {
     if (!empty($rtnUrl)) {
         JsUtil::replace($rtnUrl);
         exit;
     } else {
         $rtnUrl = "./branch.php";
+        JsUtil::replace($rtnUrl);
         exit;
     }
 }
