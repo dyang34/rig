@@ -17,7 +17,7 @@ switch(LoginManager::getManagerLoginInfo('adm_grade')) {
         JsUtil::replace("/admin/adm_mem_list.php");
         break;
     default:
-        JsUtil::alertBack("비정상적인 접근입니다.");
+        JsUtil::alertBack("비정상적인 권한입니다.");
         exit;
         break;
 }
