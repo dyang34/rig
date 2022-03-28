@@ -52,7 +52,6 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
         
 <?php
 if ($rig_adm_ck_auto=="rig_adm_auto_login" && !empty($rig_adm_ck_userid)) {
-    echo "aaa";
 ?>
 
 <form name="autoLoginForm" method="post" action="./admin_login_act.php">
