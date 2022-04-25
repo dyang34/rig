@@ -18,7 +18,7 @@ class AdmMemberDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select adm_id, adm_name, adm_grade, reg_date "
+		$sql =" select adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 			 ." from rig_adm_member "
 			 ." where adm_id = ".$this->quot($db, $key)
 		 	 ;
@@ -35,7 +35,7 @@ class AdmMemberDao extends A_Dao
 
 	function selectByKeyForLogin($db, $key) {
 	    
-	    $sql =" select adm_id, adm_name, adm_grade, reg_date "
+	    $sql =" select adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 	        ." from rig_adm_member "
             ." where adm_id = ".$this->quot($db, $key)
         ;
@@ -52,7 +52,7 @@ class AdmMemberDao extends A_Dao
 	
 	function selectFirst($db, $wq) {
 
-		$sql =" select adm_id, adm_name, adm_grade, reg_date "
+		$sql =" select adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 			 ." from rig_adm_member"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -71,7 +71,7 @@ class AdmMemberDao extends A_Dao
 	function selectFirstForLogin($db, $wq) {
 	    
 	    
-	    $sql =" select adm_id, adm_name, adm_grade, reg_date "
+	    $sql =" select adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 	        ." from rig_adm_member"
             .$wq->getWhereQuery()
         ;
@@ -89,7 +89,7 @@ class AdmMemberDao extends A_Dao
 	
 	function select($db, $wq) {
 	    
-	    $sql =" select adm_id, adm_name, adm_grade, reg_date "
+	    $sql =" select adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 	         ." from rig_adm_member"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -101,7 +101,7 @@ class AdmMemberDao extends A_Dao
 	function selectPerPage($db, $wq, $pg) {
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			 ."		select @rnum:=0, adm_id, adm_name, adm_grade, reg_date "
+			 ."		select @rnum:=0, adm_id, adm_name, adm_grade, reg_date, adm_last_login "
 			 ."		from rig_adm_member"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -149,5 +149,15 @@ class AdmMemberDao extends A_Dao
 			return false;
 		}
 	}
+	
+	function update($db, $uq, $key) {
+	    
+	    $sql =" update rig_adm_member"
+	        .$uq->getQuery($db)
+	        ." where adm_id = ".$this->quot($db, $key);
+	        
+	        return $db->query($sql);
+	}
+	
 }
 ?>

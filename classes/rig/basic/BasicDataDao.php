@@ -18,7 +18,7 @@ class BasicDataDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select code, data_val, upd_date "
+		$sql =" select code, sub_code, data_val, upd_date "
 			 ." from rig_basic_data "
 			 ." where code = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class BasicDataDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select code, data_val, upd_date "
+		$sql =" select code, sub_code, data_val, upd_date "
 			 ." from rig_basic_data"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class BasicDataDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select code, data_val, upd_date "
+	    $sql =" select code, sub_code, data_val, upd_date "
 	         ." from rig_basic_data"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -68,7 +68,7 @@ class BasicDataDao extends A_Dao
 	function selectPerPage($db, $wq, $pg) {
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			 ."		select @rnum:=0, code, data_val, upd_date "
+			 ."		select @rnum:=0, code, sub_code, data_val, upd_date "
 			 ."		from rig_basic_data"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -129,8 +129,9 @@ class BasicDataDao extends A_Dao
 	
 	function insert($db, $arrVal) {
 	    
-	    $sql =" insert into rig_basic_data(code, data_val, upd_date)"
+	    $sql =" insert into rig_basic_data(code, sub_code, data_val, upd_date)"
 	        ." values ('".$this->checkMysql($db, $arrVal["code"])
+	        ."', '".$this->checkMysql($db, $arrVal["sub_code"])
 	        ."', '".$this->checkMysql($db, $arrVal["data_val"])
 	        ."', now())"
 	            ;

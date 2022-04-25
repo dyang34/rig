@@ -169,5 +169,28 @@ class AdmMemberMgr extends A_Mgr
         @ $db->close();
         return $result;
     }
+    
+    function edit($uq, $key) {
+        
+        $isOk = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            //$this->startTran($db);
+            
+            $isOk = AdmMemberDao::getInstance()->update($db, $uq, $key);
+            
+            //$this->commit($db);
+            
+        } catch(Exception $e) {
+            //$this->rollback($db);
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $isOk;
+    }
 }
 ?>
