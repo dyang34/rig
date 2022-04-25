@@ -10,17 +10,13 @@
     			</div>
             </li>
     <?php
-    if (LoginManager::getUserLoginInfo("iam_grade") >= 10) {
+    if (LoginManager::getManagerLoginInfo("adm_grade") >= 5) {
     ?>
             <li>
-                <a href='#' class="btn <?=$menuCate==3?"on":""?>">기초 정보<span></span></a>
+                <a href='#' class="btn <?=$menuCate==2?"on":""?>">HashRate<span></span></a>
                 <div class="subMenu">
-                	<a href="/admin/adm_mem_list.php " class="<?=$menuNo==9?"on":""?>">- 회원 관리</a>
-                    <a href="/admin/goods_list.php " class="<?=$menuNo==4?"on":""?>">- 상품 관리</a>
-                    <a href="/admin/goods_item_list.php " class="<?=$menuNo==24?"on":""?>">- 품목 관리</a>
-                    <a href="/admin/brand_list.php " class="<?=$menuNo==5?"on":""?>">- 브랜드 관리</a>
-                    <a href="/admin/category_list.php " class="<?=$menuNo==6?"on":""?>">- 카테고리 관리</a>
-                    <a href="/admin/channel_list.php " class="<?=$menuNo==7?"on":""?>">- 채널 리스트</a>
+                	<a href="/admin/hashrate/hashrate_list.php " class="<?=$menuNo==2?"on":""?>">- HashRate 명세</a>
+                    <a href="/admin/hashrate/hashrate_aggr_list.php " class="<?=$menuNo==3?"on":""?>">- HashRate 집계</a>
                 </div>
             </li>
     <?php

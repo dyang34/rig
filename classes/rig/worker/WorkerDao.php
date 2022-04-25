@@ -19,7 +19,7 @@ class WorkerDao extends A_Dao
 	function selectByKey($db, $key) {
 		 
 		$sql =" select userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date, upd_date "
-			 ." from rig_workers "
+			 ." from rig_worker "
 			 ." where rp_idx = ".$this->quot($db, $key)
 		 	 ;
 		
@@ -36,7 +36,7 @@ class WorkerDao extends A_Dao
 	function selectFirst($db, $wq) {
 
 		$sql =" select userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date, upd_date "
-			 ." from rig_workers"
+			 ." from rig_worker"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
 			 ;
@@ -54,7 +54,7 @@ class WorkerDao extends A_Dao
 	function select($db, $wq) {
 	    
 	    $sql =" select userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date, upd_date "
-	         ." from rig_workers"
+	         ." from rig_worker"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
 	         ;
@@ -66,7 +66,7 @@ class WorkerDao extends A_Dao
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 			 ."		select @rnum:=0, userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date, upd_date "
-			 ."		from rig_workers"
+			 ."		from rig_worker"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
 	         ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
@@ -79,7 +79,7 @@ class WorkerDao extends A_Dao
 	function selectCount($db, $wq) {
 
 		$sql =" select count(*) cnt"
-			 ." from rig_workers a "
+			 ." from rig_worker a "
 			 .$wq->getWhereQuery()
 			 ;
 		
@@ -96,7 +96,7 @@ class WorkerDao extends A_Dao
 	function exists($db, $wq) {
 
 		$sql =" select count(*) cnt"
-			 ." from rig_workers"
+			 ." from rig_worker"
 			 .$wq->getWhereQuery()
 			 ;
 
@@ -116,7 +116,7 @@ class WorkerDao extends A_Dao
 	
 	function insert($db, $arrVal) {
 	    
-		$sql =" insert into rig_workers(userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date)"
+		$sql =" insert into rig_worker(userid, rm_name, rm_wallet_addr, worker, time, lastSeen, reportedHashrate, currentHashrate, validShares, invalidShares, staleShares, reg_date)"
 			 ." values ('".$this->checkMysql($db, $arrVal["userid"])
 			 ."', '".$this->checkMysql($db, $arrVal["rm_name"])
 			 ."', '".$this->checkMysql($db, $arrVal["rm_wallet_addr"])

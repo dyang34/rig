@@ -62,6 +62,46 @@ class CurrentStatsDao extends A_Dao
 	    return $db->query($sql);
 	}
 	
+	function selectAvg1($db, $wq, $start_h=0, $interval_h=4) {
+	
+	   $sql =" SELECT userid "
+	        ." ,DATE_FORMAT(time_date,'%Y-%m-%d') date_ymd "
+	        ." ,FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") date_h "
+	        ." ,MIN(time_date) time_date_min "
+	        ." ,MAX(time_date) time_date_max "
+	        ." ,floor(avg(currentHashrate)) currentHashrate "
+	        ." ,floor(avg(averageHashrate)) averageHashrate "
+	        ." ,floor(avg(reportedHashrate)) reportedHashrate "
+            ." ,COUNT(*) cnt "
+            ." from rig_miner_current_stats"
+            .$wq->getWhereQuery()
+            ." group by userid, DATE_FORMAT(time_date,'%Y-%m-%d'), FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") "
+            .$wq->getOrderByQuery()
+        ;
+		                
+        return $db->query($sql);
+	}
+	
+	function selectAvg2($db, $wq, $start_ymdh="", $interval_h=4) {
+	    
+        $sql =" SELECT userid "
+            ." ,FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
+	        ." ,MIN(time_date) time_date_min "
+	        ." ,MAX(time_date) time_date_max "
+	        ." ,floor(avg(currentHashrate)) currentHashrate "
+	        ." ,floor(avg(averageHashrate)) averageHashrate "
+	        ." ,floor(avg(reportedHashrate)) reportedHashrate "
+            ." ,COUNT(*) cnt "
+            ." FROM rig_miner_current_stats a "
+            .$wq->getWhereQuery()
+            ." GROUP BY userid, FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
+                .$wq->getOrderByQuery()
+        ;
+        
+        return $db->query($sql);
+        
+	}
+	
 	function selectPerPage($db, $wq, $pg) {
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
@@ -74,6 +114,52 @@ class CurrentStatsDao extends A_Dao
 			 ;
 
 		return $db->query($sql);
+	}
+	
+	function selectAvg1PerPage($db, $wq, $start_h=0, $interval_h=4, $pg) {
+	    
+	    $sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
+	       ." SELECT @rnum:=0, userid "
+	        ." ,DATE_FORMAT(time_date,'%Y-%m-%d') date_ymd "
+	            ." ,FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") date_h "
+	                ." ,MIN(time_date) time_date_min "
+	                    ." ,MAX(time_date) time_date_max "
+	                        ." ,floor(avg(currentHashrate)) currentHashrate "
+	                            ." ,floor(avg(averageHashrate)) averageHashrate "
+	                                ." ,floor(avg(reportedHashrate)) reportedHashrate "
+	                                    ." ,COUNT(*) cnt "
+	                                        ." from rig_miner_current_stats"
+	                                            .$wq->getWhereQuery()
+	                                            ." group by userid, DATE_FORMAT(time_date,'%Y-%m-%d'), FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") "
+	                                                .$wq->getOrderByQuery()
+	                                                ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
+	                                                ." ) r"
+	                                                    ;
+	                                                
+	                                                return $db->query($sql);
+	}
+	
+	function selectAvg2PerPage($db, $wq, $start_ymdh="", $interval_h=4, $pg) {
+	    
+	    $sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
+	        ." SELECT @rnum:=0, userid "
+	            ." ,FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
+	            ." ,MIN(time_date) time_date_min "
+	                ." ,MAX(time_date) time_date_max "
+	                    ." ,floor(avg(currentHashrate)) currentHashrate "
+	                        ." ,floor(avg(averageHashrate)) averageHashrate "
+	                            ." ,floor(avg(reportedHashrate)) reportedHashrate "
+	                                ." ,COUNT(*) cnt "
+	                                    ." FROM rig_miner_current_stats a "
+	                                        .$wq->getWhereQuery()
+	                                        ." GROUP BY userid, FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
+	                                            .$wq->getOrderByQuery()
+	                                            ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
+	                                            ." ) r"
+	                                                ;
+	                                            
+	                                            return $db->query($sql);
+	                                            
 	}
 	
 	function selectCount($db, $wq) {

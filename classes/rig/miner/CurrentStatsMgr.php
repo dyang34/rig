@@ -1,10 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/miner/HistoryDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/miner/CurrentStatsDao.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
-class HistoryMgr extends A_Mgr
+class CurrentStatsMgr extends A_Mgr
 {
     private static $instance = null;
     
@@ -27,7 +27,7 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $row = HistoryDao::getInstance()->selectByKey($db, $key);
+            $row = CurrentStatsDao::getInstance()->selectByKey($db, $key);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -45,7 +45,7 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $row = HistoryDao::getInstance()->selectFirst($db, $wq);
+            $row = CurrentStatsDao::getInstance()->selectFirst($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -66,7 +66,50 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = HistoryDao::getInstance()->select($db, $wq);
+            $result = CurrentStatsDao::getInstance()->select($db, $wq);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+    
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListAvg1($wq, $start_h=0, $interval_h=4) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = CurrentStatsDao::getInstance()->selectAvg1($db, $wq, $start_h, $interval_h);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+    
+    
+        /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListAvg2($wq, $start_ymdh="", $interval_h=4) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = CurrentStatsDao::getInstance()->selectAvg2($db, $wq, $start_ymdh, $interval_h);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -87,8 +130,8 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $pg->setTotalCount(HistoryDao::getInstance()->selectCount($db, $wq));
-            $result = HistoryDao::getInstance()->selectPerPage($db, $wq, $pg);
+            $pg->setTotalCount(CurrentStatsDao::getInstance()->selectCount($db, $wq));
+            $result = CurrentStatsDao::getInstance()->selectPerPage($db, $wq, $pg);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -98,6 +141,50 @@ class HistoryMgr extends A_Mgr
         return $result;
     }
 
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListAvg1PerPage($wq, $start_h=0, $interval_h=4, $pg) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            //$pg->setTotalCount(CurrentStatsDao::getInstance()->selectCount($db, $wq));
+            $result = CurrentStatsDao::getInstance()->selectAvg1PerPage($db, $wq, $start_h, $interval_h, $pg);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+    
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListAvg2PerPage($wq, $start_ymdh="", $interval_h=4, $pg) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            //$pg->setTotalCount(CurrentStatsDao::getInstance()->selectCount($db, $wq));
+            $result = CurrentStatsDao::getInstance()->selectAvg2PerPage($db, $wq, $start_ymdh, $interval_h, $pg);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+    
     function getCount($wq) {
         
         $result = null;
@@ -106,7 +193,7 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = HistoryDao::getInstance()->selectCount($db, $wq);
+            $result = CurrentStatsDao::getInstance()->selectCount($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -124,7 +211,7 @@ class HistoryMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = HistoryDao::getInstance()->exists($db, $wq);
+            $result = CurrentStatsDao::getInstance()->exists($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -144,7 +231,7 @@ class HistoryMgr extends A_Mgr
             
 //            $this->startTran($db);
             
-            $isOk = HistoryDao::getInstance()->insert($db, $arrVal);
+            $isOk = CurrentStatsDao::getInstance()->insert($db, $arrVal);
             
 //            $this->commit($db);
             
@@ -167,7 +254,7 @@ class HistoryMgr extends A_Mgr
             
             //$this->startTran($db);
             
-            $isOk = HistoryDao::getInstance()->update($db, $uq, $key);
+            $isOk = CurrentStatsDao::getInstance()->update($db, $uq, $key);
             
             //$this->commit($db);
             
@@ -190,7 +277,7 @@ class HistoryMgr extends A_Mgr
             
             //$this->startTran($db);
             
-            $isOk = HistoryDao::getInstance()->delete($db, $key);
+            $isOk = CurrentStatsDao::getInstance()->delete($db, $key);
             
             //$this->commit($db);
             
