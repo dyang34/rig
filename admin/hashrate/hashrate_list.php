@@ -16,6 +16,8 @@ if(!LoginManager::isManagerLogined()) {
 $menuCate = 2;
 $menuNo = 2;
 
+$arrDayOfWeek = array("일","월","화","수","목","금","토");
+
 $currentPage = RequestUtil::getParam("currentPage", "1");
 $pageSize = RequestUtil::getParam("pageSize", "25");
 $_time_date_from = RequestUtil::getParam("_time_date_from", date("Y-m-01"));
@@ -109,7 +111,7 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
                 						?>
                 					</select>
                             </td>
-                			<th>Hashrate 제한</th>
+                			<th>Current Hashrate 제한</th>
                 			<td><input type="text" name="_lower_average_hashrate" id="_lower_average_hashrate" placeholder="Giga Hashrate" value="<?=$_lower_average_hashrate?>" style="width:50%">GH/s이하</td>
                 		</tr>
                 	</tbody>
@@ -138,16 +140,21 @@ if ( $rs->num_rows > 0 ) {
     		<col>
     		<col>
     		<col>
+    		<col style="width:20px;">
     		<col>
     		<col>
-    		<col>
-    		<col style="width:200px;">
+            <col>    		
+            <col>    		
+            <col>    		
+            <col>    		
+            <col>    		
     	</colgroup>
         <thead>
             <tr>
                 <th class="tbl_first">ID</th>
                 <th>이름</th>
                 <th>등록일</th>
+                <th>요일</th>
                 <th>탐색일</th>
                 <th>Current Hashrate</th>
                 <th>Average Hashrate</th>
@@ -161,11 +168,14 @@ if ( $rs->num_rows > 0 ) {
 <?php
     for ( $i=0; $i<$rs->num_rows; $i++ ) {
         $row = $rs->fetch_assoc();
+
+        $idx_day_of_week = date('w', strtotime(substr($row["time_date"],0,10)));
 ?>
             <tr>
                 <td class="tbl_first" style="text-align:center;"><?=$row["userid"]?></td>
                 <td style="text-align:center;"><?=$row["rm_name"]?></td>
                 <td style="text-align:center;"><?=$row["time_date"]?></td>
+                <td style="text-align:center;<?=$idx_day_of_week=="6"?"color:blue;":($idx_day_of_week=="0"?"color:red;":"")?>"><?=$arrDayOfWeek[$idx_day_of_week]?></td>
                 <td style="text-align:center;"><?=$row["lastSeen_date"]?></td>
 <?php
 /*
@@ -205,17 +215,8 @@ if ( $rs->num_rows > 0 ) {
 }
 ?>
 
+<script src="/cms/js/util/ValidCheck.js"></script>
 <script type="text/javascript">
-	$(document).on('click','a[name=btn_order_by]',function(e) {
-		
-		var f = document.pageForm;
-		f.currentPage.value = 1;
-		f._orderby.value=$(this).attr('val');
-		f.action = "hashrate_list.php";
-		f.submit();
-	
-	});
-
 	$(document).on('click','a[name=btn_order_by]',function(e) {
 		
 		var f = document.pageForm;
@@ -236,17 +237,20 @@ if ( $rs->num_rows > 0 ) {
 	$(document).on('click','a[name=btnExcelDownload]', function() {
     	var f = document.pageForm;
     	f.target = "_new";
-    	f.action = "adm_mem_list_xls.php";
+    	f.action = "hashrate_list_xls.php";
     	
     	f.submit();
     });
     
     $(document).on("click","a[name=btnSearch]",function() {
 	
-	var f = document.searchForm;
+        var f = document.searchForm;
 
-    f.submit();	
-});
+        if ( VC_inValidDate(f._time_date_from, "판매일자 시작일") ) return false;
+        if ( VC_inValidDate(f._time_date_to, "판매일자 종료일") ) return false;
+
+        f.submit();	
+    });
 	
 </script>
 
