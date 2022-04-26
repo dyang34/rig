@@ -24,7 +24,8 @@ $_time_date_from = RequestUtil::getParam("_time_date_from", date("Y-m-01"));
 $_time_date_to = RequestUtil::getParam("_time_date_to", date("Y-m-d"));
 $_userid = RequestUtil::getParam("_userid", "");
 $_lower_average_hashrate = RequestUtil::getParam("_lower_average_hashrate", "");
-$_orderby = RequestUtil::getParam("_orderby", "time_date");
+$_order_by = RequestUtil::getParam("_order_by", "time_date");
+$_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
 
 $pg = new Page($currentPage, $pageSize);
 
@@ -49,14 +50,7 @@ $wq->addAndStringBind("time_date", "<", $_time_date_to, "date_add('?', interval 
 $wq->addAndString("userid","=",$_userid);
 $wq->addAndString("currentHashrate","<=",$_lower_average_hashrate*1000*1000*1000);
 
-switch($_orderby) {
-    case "time_date":
-        $wq->addOrderBy("time_date","desc");
-        break;
-    case "userid":
-        $wq->addOrderBy("userid","asc");
-        break;
-}
+$wq->addOrderBy($_order_by, $_order_by_asc);
 $wq->addOrderBy("time_date","desc");
 
 $rs = CurrentStatsMgr::getInstance()->getListPerPage($wq, $pg);
@@ -71,7 +65,8 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
         <input type="hidden" name="_time_date_to" value="<?=$_time_date_to?>">
         <input type="hidden" name="_userid" value="<?=$_userid?>">
         <input type="hidden" name="_lower_average_hashrate" value="<?=$_lower_average_hashrate?>">
-        <input type="hidden" name="_orderby" value="<?=$_orderby?>">
+        <input type="hidden" name="_order_by" value="<?=$_order_by?>">
+        <input type="hidden" name="_order_by_asc" value="<?=$_order_by_asc?>">
     </form>
 
     <div>
@@ -127,8 +122,9 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
 	<div class="float-wrap">
 		<h3 class="float-l">전체 <strong><?=number_format($pg->getTotalCount())?>건</strong></h3>
 		<p class="list-adding float-r">
-			<a href="#" name="btn_order_by" val="time_date" class="<?=$_orderby=="time_date"?"on":""?>" >일자순</a>
-			<a href="#" name="btn_order_by" val="userid" class="<?=$_orderby=="userid"?"on":""?>" >아이디순<em>▲</em></a>
+            <a href="#none" name="_btn_sort" order_by="time_date" order_by_asc="desc" class="<?=$_order_by=="time_date" && $_order_by_asc=="desc"?"on":""?>">등록일<em>▼</em></a>
+            <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="asc" class="<?=$_order_by=="userid" && $_order_by_asc=="asc"?"on":""?>">아이디순<em>▲</em></a>
+            <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="desc" class="<?=$_order_by=="userid" && $_order_by_asc=="desc"?"on":""?>">아이디순<em>▼</em></a>
 		</p>
 	</div>
 			
@@ -217,15 +213,6 @@ if ( $rs->num_rows > 0 ) {
 
 <script src="/cms/js/util/ValidCheck.js"></script>
 <script type="text/javascript">
-	$(document).on('click','a[name=btn_order_by]',function(e) {
-		
-		var f = document.pageForm;
-		f.currentPage.value = 1;
-		f._orderby.value=$(this).attr('val');
-		f.action = "hashrate_list.php";
-		f.submit();
-	
-	});
 	
 	function goPage(page) {
 		var f = document.pageForm;
@@ -251,7 +238,21 @@ if ( $rs->num_rows > 0 ) {
 
         f.submit();	
     });
-	
+
+    $(document).on('click', 'a[name=_btn_sort]', function() {
+        goSort($(this).attr('order_by'), $(this).attr('order_by_asc'));
+    });
+
+    var goSort = function(p_order_by, p_order_by_asc) {
+        var f = document.pageForm;
+        f.currentPage.value = 1;
+        f._order_by.value = p_order_by;
+        f._order_by_asc.value = p_order_by_asc;
+
+        f.action = "hashrate_list.php";
+        f.submit();
+    }
+
 </script>
 
 <?php

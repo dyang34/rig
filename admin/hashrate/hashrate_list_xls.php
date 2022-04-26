@@ -19,7 +19,8 @@ $_time_date_from = RequestUtil::getParam("_time_date_from", date("Y-m-01"));
 $_time_date_to = RequestUtil::getParam("_time_date_to", date("Y-m-d"));
 $_userid = RequestUtil::getParam("_userid", "");
 $_lower_average_hashrate = RequestUtil::getParam("_lower_average_hashrate", "");
-$_orderby = RequestUtil::getParam("_orderby", "time_date");
+$_order_by = RequestUtil::getParam("_order_by", "time_date");
+$_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
 
 $wq = new WhereQuery(true, true);
 $wq->addAndString("time_date", ">=", $_time_date_from);
@@ -27,14 +28,7 @@ $wq->addAndStringBind("time_date", "<", $_time_date_to, "date_add('?', interval 
 $wq->addAndString("userid","=",$_userid);
 $wq->addAndString("currentHashrate","<=",$_lower_average_hashrate*1000*1000*1000);
 
-switch($_orderby) {
-    case "time_date":
-        $wq->addOrderBy("time_date","desc");
-        break;
-    case "userid":
-        $wq->addOrderBy("userid","asc");
-        break;
-}
+$wq->addOrderBy($_order_by, $_order_by_asc);
 $wq->addOrderBy("time_date","desc");
 
 $rs = CurrentStatsMgr::getInstance()->getList($wq);
