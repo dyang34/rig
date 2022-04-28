@@ -6,6 +6,10 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 
+if($_SERVER['SERVER_NAME']=="admin.lucirdon.co.kr") {
+    header("Location:/admin/");;
+}
+
 $blm_ck_auto = CookieUtil::getCookieMd5("blm_ck_auto");
 $blm_ck_userid = CookieUtil::getCookieMd5("blm_ck_userid");
 

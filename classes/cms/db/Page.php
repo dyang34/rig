@@ -488,6 +488,52 @@ class Page
                 return $ret;
     }
     
+    function getNaviForFuncGP_m($funcName) {
+        
+        $ret = "";
+        $last = 0;
+        $pageBlock = 5;
+        $rest = 0;
+        $start = 0;
+        
+        $ret = "<ul class='pagination'>";
+        
+        $last = (int)($this->totalCount/$this->pageSize);
+        if( ($this->totalCount % $this->pageSize) > 0 )
+            $last += 1;
+            $rest = $this->currentPage % $pageBlock;
+            if( $rest == 0 )
+                $rest = $pageBlock;
+                $start = $this->currentPage - $rest + 1;
+                if( $last > 1 ) {
+                    
+                    if( $start - $pageBlock > 0 ) {
+                        $ret .= "<li class=\"page-item prev-page\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:" . $funcName . "('1');return false;\"><<</a>";
+                        $ret .= "<li class=\"page-item prev\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:" . $funcName . "('" . ($start-$pageBlock) . "');return false;\"><</a>";
+                    }
+                    for($i = $start; $i <= ($start+$pageBlock-1); $i++) {
+                        if( $i <= $last ) {
+                            if( $i == $this->currentPage) {
+                                $ret .= "<li class=\"page-item active\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:return false;\">". $i."</a></li>";
+                            } else {
+                                $ret .= "<li class=\"page-item\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:".$funcName."('".$i."');return false;\">".$i."</a></li>";
+                            }
+                        }
+                    }
+                    
+                    if( ($start+$pageBlock) <= $last ) {
+                        $ret .= "<li class=\"page-item next\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:" . $funcName . "('" . ($start+$pageBlock) . "');return false;\">></a>";
+                        $ret .= "<li class=\"page-item next-page\"><a class=\"page-link\" href=\"#\" onclick=\"javascript:" . $funcName . "('" . $last . "');return false;\">>></a>";
+                    }
+                } else {
+                    $ret .= "<li>&nbsp;</li>";
+                }
+                
+                $ret .= "</ul>";
+                
+                return $ret;
+    }
+
     function getNaviForFuncMcParam($funcName, $startBtn, $previousBtn, $nextBtn, $endBtn, $totalCount) {
         
         $ret = "";

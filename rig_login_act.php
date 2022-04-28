@@ -82,7 +82,7 @@ if($mode=="login"){
                 $rtnUrl = "http://".$_SERVER[SERVER_NAME].$rtnUrl;
                 
         } else {
-            $rtnUrl = "/rig/dashboard.php";
+            $rtnUrl = "/dashboard.php";
         }
         /*
          if (RequestUtil::isBlingIPhoneAppPop()) {
@@ -138,7 +138,7 @@ if($mode=="login"){
                 $rtnUrl = "http://".$_SERVER[SERVER_NAME].$rtnUrl;
                 
         } else {
-            $rtnUrl = "/rig/dashboard.php";
+            $rtnUrl = "/dashboard.php";
         }
         
         JsUtil::replace($rtnUrl);
