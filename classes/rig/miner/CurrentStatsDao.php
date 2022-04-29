@@ -85,23 +85,25 @@ class CurrentStatsDao extends A_Dao
 	function selectAvg2($db, $wq, $start_ymdh="", $interval_h=4) {
 	    
         $sql =" SELECT userid "
-            ." ,FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
-	        ." ,MIN(time_date) time_date_min "
-	        ." ,MAX(time_date) time_date_max "
-	        ." ,floor(avg(currentHashrate)) currentHashrate "
-	        ." ,floor(avg(averageHashrate)) averageHashrate "
-	        ." ,floor(avg(reportedHashrate)) reportedHashrate "
-            ." ,COUNT(*) cnt "
-            ." FROM rig_miner_current_stats a "
+			." ,FLOOR((lastSeen-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
+			." ,MIN(lastSeen_date) lastSeen_date_min "
+			." ,MAX(lastSeen_date) lastSeen_date_max "
+			." ,floor(avg(currentHashrate)) currentHashrate "
+			." ,floor(avg(averageHashrate)) averageHashrate "
+			." ,floor(avg(reportedHashrate)) reportedHashrate "
+			." ,avg(validShares) validShares "
+			." ,avg(activeWorkers) activeWorkers "
+			." ,avg(coinsPerMin) coinsPerMin "
+			." FROM rig_miner_current_stats a "
             .$wq->getWhereQuery()
-            ." GROUP BY userid, FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
-                .$wq->getOrderByQuery()
+            ." GROUP BY userid, FLOOR((lastSeen-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
+			.$wq->getOrderByQuery()
         ;
         
         return $db->query($sql);
         
 	}
-	
+
 	function selectPerPage($db, $wq, $pg) {
 		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
@@ -120,17 +122,17 @@ class CurrentStatsDao extends A_Dao
 	    
 	    $sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 	       ." SELECT @rnum:=0, userid "
-	        ." ,DATE_FORMAT(time_date,'%Y-%m-%d') date_ymd "
-	            ." ,FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") date_h "
-	                ." ,MIN(time_date) time_date_min "
-	                    ." ,MAX(time_date) time_date_max "
+	        ." ,DATE_FORMAT(lastSeen_date,'%Y-%m-%d') date_ymd "
+	            ." ,FLOOR((DATE_FORMAT(lastSeen_date,'%H')-".$start_h.")/".$interval_h.") date_h "
+	                ." ,MIN(lastSeen_date) lastSeen_date_min "
+	                    ." ,MAX(lastSeen_date) lastSeen_date_max "
 	                        ." ,floor(avg(currentHashrate)) currentHashrate "
 	                            ." ,floor(avg(averageHashrate)) averageHashrate "
 	                                ." ,floor(avg(reportedHashrate)) reportedHashrate "
 	                                    ." ,COUNT(*) cnt "
 	                                        ." from rig_miner_current_stats"
 	                                            .$wq->getWhereQuery()
-	                                            ." group by userid, DATE_FORMAT(time_date,'%Y-%m-%d'), FLOOR((DATE_FORMAT(time_date,'%H')-".$start_h.")/".$interval_h.") "
+	                                            ." group by userid, DATE_FORMAT(lastSeen_date,'%Y-%m-%d'), FLOOR((DATE_FORMAT(lastSeen_date,'%H')-".$start_h.")/".$interval_h.") "
 	                                                .$wq->getOrderByQuery()
 	                                                ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
 	                                                ." ) r"
@@ -143,16 +145,19 @@ class CurrentStatsDao extends A_Dao
 	    
 	    $sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 	        ." SELECT @rnum:=0, userid "
-	            ." ,FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
-	            ." ,MIN(time_date) time_date_min "
-	                ." ,MAX(time_date) time_date_max "
+	            ." ,FLOOR((lastSeen-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).") date_h"
+	            ." ,MIN(lastSeen_date) lastSeen_date_min "
+	                ." ,MAX(lastSeen_date) lastSeen_date_max "
 	                    ." ,floor(avg(currentHashrate)) currentHashrate "
 	                        ." ,floor(avg(averageHashrate)) averageHashrate "
 	                            ." ,floor(avg(reportedHashrate)) reportedHashrate "
+								." ,avg(validShares) validShares "
+								." ,avg(activeWorkers) activeWorkers "
+								." ,avg(coinsPerMin) coinsPerMin "
 	                                ." ,COUNT(*) cnt "
 	                                    ." FROM rig_miner_current_stats a "
 	                                        .$wq->getWhereQuery()
-	                                        ." GROUP BY userid, FLOOR((TIME-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
+	                                        ." GROUP BY userid, FLOOR((lastSeen-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
 	                                            .$wq->getOrderByQuery()
 	                                            ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
 	                                            ." ) r"
@@ -179,6 +184,25 @@ class CurrentStatsDao extends A_Dao
 		return $row["cnt"];
 	}
 	
+	function selectAvg2Count($db, $wq, $start_ymdh="", $interval_h=4) {
+
+		$sql =" select count(*) cnt from (select count(*) "
+			 ." from rig_miner_current_stats a "
+			 .$wq->getWhereQuery()
+			 ." GROUP BY userid, FLOOR((lastSeen-UNIX_TIMESTAMP('".$start_ymdh."'))/".($interval_h*3600).")"
+			 .") as t "
+			 ;
+		
+		$row = null;
+		$result = $db->query($sql);
+		if ( $result->num_rows > 0 ) {
+			$row = $result->fetch_assoc();
+		}
+		
+		@ $result->free();
+		return $row["cnt"];
+	}
+
 	function exists($db, $wq) {
 
 		$sql =" select count(*) cnt"

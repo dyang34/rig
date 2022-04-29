@@ -5,10 +5,16 @@ require_once $_SERVER['DOCUMENT_ROOT']."/common/ism_ip_check.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/RequestUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/Page.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/member/MemberMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/rig/miner/CurrentStatsMgr.php";
 
 if(!LoginManager::isManagerLogined()) {
     JsUtil::alertReplace("로그인이 필요합니다.    ","/admin");
+    exit;
+}
+
+if (RequestUtil::isMobileAgent()) {
+    header("Location:/admin/m/".basename($_SERVER['REQUEST_URI']));;
     exit;
 }
 
@@ -18,28 +24,106 @@ $menuNo = 3;
 $currentPage = RequestUtil::getParam("currentPage", "1");
 $pageSize = RequestUtil::getParam("pageSize", "25");
 
-$_time_date_from = RequestUtil::getParam("_time_date_from", date("Y-m-01"));
-$_time_date_H_from = RequestUtil::getParam("_time_date_H_from", '00');
-$_time_date_to = RequestUtil::getParam("_time_date_to", date("Y-m-d"));
+$_lastSeen_date_from = RequestUtil::getParam("_lastSeen_date_from", date("Y-m-01"));
+$_lastSeen_date_H_from = RequestUtil::getParam("_lastSeen_date_H_from", '0');
+$_lastSeen_date_to = RequestUtil::getParam("_lastSeen_date_to", date("Y-m-d"));
 $_interval_H = RequestUtil::getParam("_interval_H", '4');
 $_userid = RequestUtil::getParam("_userid", "");
-$_fg_continuous = RequestUtil::getParam("_fg_continuous", "N");
+//$_fg_continuous = RequestUtil::getParam("_fg_continuous", "N");
 
-$_order_by = RequestUtil::getParam("_order_by", "time_date_min");
+$_order_by = RequestUtil::getParam("_order_by", "lastSeen_date_min");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
 
 $pg = new Page($currentPage, $pageSize);
 
+$arrUser = array();
+
 $wq = new WhereQuery(true, true);
-$wq->addAndString("time_date", ">=", $_time_date_from.' '.$_time_date_H_from);
-$wq->addAndStringBind("time_date", "<", $_time_date_to, "date_add('?', interval 1 day)");
+$wq->addAndString2("rm_fg_del","=","0");
+$wq->addAndString("rm_fg_avg_hashrate","=","1");
+$wq->addOrderBy("userid","asc");
+$rs = MemberMgr::getInstance()->getList($wq);
+if ($rs->num_rows > 0) {
+    for($i=0;$i<$rs->num_rows;$i++) {
+        $row = $rs->fetch_assoc();
+        
+        $arrUser[$row["userid"]] = $row["rm_name"];
+    }
+}
+
+$lastSeen_date_h_from = $_lastSeen_date_from.' '.$_lastSeen_date_H_from;
+
+$wq = new WhereQuery(true, true);
+$wq->addAndString("lastSeen_date", ">=", $lastSeen_date_h_from);
+$wq->addAndStringBind("lastSeen_date", "<", $_lastSeen_date_to, "date_add('?', interval 1 day)");
 $wq->addAndString("userid", "=", $_userid);
 
 $wq->addOrderBy($_order_by, $_order_by_asc);
+$wq->addOrderBy("lastSeen_date_min", "desc");
+$wq->addOrderBy("userid","asc");
 
-$wq->addOrderBy("time_date_min", "desc");
+$rs = CurrentStatsMgr::getInstance()->getListAvg2PerPage($wq, $lastSeen_date_h_from, $_interval_H, $pg);
 
-$rs = CurrentStatsMgr::getInstance()->getListAvg1PerPage($wq, $_time_date_H_from, $_interval_H, $pg);
+$wq2 = new WhereQuery(true, true);
+$wq2->addAndString("lastSeen_date", ">=", $lastSeen_date_h_from);
+$wq2->addAndStringBind("lastSeen_date", "<", $_lastSeen_date_to, "date_add('?', interval 1 day)");
+$wq2->addAndString("userid", "=", $_userid);
+$wq2->addAndIn("userid", array('gpclub1','gpclub2'));
+$wq2->addOrderBy("userid", "asc");
+$wq2->addOrderBy("lastSeen_date_min", "asc");
+
+$rs2 = CurrentStatsMgr::getInstance()->getListAvg2($wq2, $lastSeen_date_h_from, $_interval_H);
+
+$chart_label = "";
+$chart_data = "";
+$fg_first_chart_data = true;
+$prev_userid = "";
+$fg_first_user = true;
+$arrColor = array('gpclub1'=>'red', 'gpclub2'=>'blue');
+
+if ($rs2->num_rows > 0) {
+    for($i=0; $i<$rs2->num_rows; $i++) {
+        $row = $rs2->fetch_assoc();
+
+        if ($prev_userid != $row["userid"]) {
+
+            if(!empty($prev_userid)) {
+                $chart_data .= "]},";
+
+                $fg_first_user = false;
+            }
+
+            $chart_data .= "{ 
+                label: '".$arrUser[$row["userid"]]." Current Hashrate (GH/s)', 
+                backgroundColor: 'transparent', 
+                borderColor: '".$arrColor[$row["userid"]]."', 
+                data: ["
+            ;
+
+            $prev_userid = $row["userid"];
+            $fg_first_chart_data=true;
+        }
+
+        if ($fg_first_user) {
+            if (!empty($chart_label)) {
+                $chart_label .= ",";
+            }
+    
+            $chart_label .= "'".substr($row["lastSeen_date_min"],0, 16)."'";
+        }
+
+        if (!$fg_first_chart_data) {
+            $chart_data .= ",";
+        } else {
+            $fg_first_chart_data=false;
+        }
+        
+        $chart_data .= $row["currentHashrate"]/1000/1000/1000;
+        
+    }
+}
+
+$chart_data .= "]}";
 
 include $_SERVER['DOCUMENT_ROOT']."/admin/include/head.php";
 include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
@@ -47,23 +131,12 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
 <form name="pageForm" method="get">
     <input type="hidden" name="currentPage" value="<?=$currentPage?>">
 
-    <input type="hidden" name="_time_date_from" value="<?=$_time_date_from?>">
-    <input type="hidden" name="_time_date_to" value="<?=$_time_date_to?>">
-    <input type="hidden" name="_imc_idx" value="<?=$_imc_idx?>">
-    <input type="hidden" name="_imb_idx" value="<?=$_imb_idx?>">
-    <input type="hidden" name="_cate1_idx" value="<?=$_cate1_idx?>">
-    <input type="hidden" name="_cate2_idx" value="<?=$_cate2_idx?>">
-    <input type="hidden" name="_cate3_idx" value="<?=$_cate3_idx?>">
-    <input type="hidden" name="_cate4_idx" value="<?=$_cate4_idx?>">
-    <input type="hidden" name="_tax_type" value="<?=$_tax_type?>">
-    <input type="hidden" name="_order_type" value="<?=$_order_type?>">
-    <input type="hidden" name="_goods_mst_code" value="<?=$_goods_mst_code?>">
-    <input type="hidden" name="_goods_name" value="<?=$_goods_name?>">
-	<input type="hidden" name="_item_code" value="<?=$_item_code?>">
-	<input type="hidden" name="_item_name" value="<?=$_item_name?>">
-	<input type="hidden" name="_except_cancel" value="<?=$_except_cancel?>">
-	<input type="hidden" name="_status" value="<?=$_status?>">
-	<input type="hidden" name="_order_no" value="<?=$_order_no?>">
+    <input type="hidden" name="_lastSeen_date_from" value="<?=$_lastSeen_date_from?>">
+    <input type="hidden" name="_lastSeen_date_to" value="<?=$_lastSeen_date_to?>">
+    <input type="hidden" name="_lastSeen_date_H_from" value="<?=$_lastSeen_date_H_from?>">
+    <input type="hidden" name="_interval_H" value="<?=$_interval_H?>">
+    <input type="hidden" name="_userid" value="<?=$_userid?>">
+    <input type="hidden" name="_fg_continuous" value="<?=$_fg_continuous?>">
     <input type="hidden" name="_order_by" value="<?=$_order_by?>">
     <input type="hidden" name="_order_by_asc" value="<?=$_order_by_asc?>">
 </form>
@@ -71,12 +144,12 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
             <!-- 상품검색(s) -->
             <div>
                 <div style="padding-left:20px;">
-                    <h3 class="icon-search">Current HashRate 검색</h3>
+                    <h3 class="icon-search">Current HashRate 집계</h3>
                     <ul class="icon_Btn">
                         <li><a href="#" name="btnExcelDownload">엑셀</a></li>
                     </ul>
                 </div>
-				<form name="searchForm" method="get" action="order_list.php">
+				<form name="searchForm" method="get" action="hashrate_aggr_list.php">
 				
                     <table class="adm-table">
                         <caption>상품 검색</caption>
@@ -90,16 +163,22 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
                         </colgroup>
                         <tbody>
 							<tr>
-                                <th>판매일자</th>
-                                <td><input type="date" id="_time_date_from" name="_time_date_from" class="date_in" value="<?=$_time_date_from?>" style="padding:0 16px;">~<input type="date" id="_time_date_to" name="_time_date_to" value="<?=$_time_date_to?>" class="date_in" style="padding:0 16px;"></td>
-                            	<th>판매유형/거래처(채널)</th>
-                            	<td colspan="3">
-								
-
-
-                                </td>                           
+                                <th>탐색일</th>
+                                <td colspan="3"><input type="date" id="_lastSeen_date_from" name="_lastSeen_date_from" class="date_in" value="<?=$_lastSeen_date_from?>" style="padding:0 16px;">&nbsp;<input type="text" name="_lastSeen_date_H_from" id="_lastSeen_date_H_from" placeholder="시" maxlength="2" value="<?=$_lastSeen_date_H_from?>" style="width:40px">시~<input type="date" id="_lastSeen_date_to" name="_lastSeen_date_to" value="<?=$_lastSeen_date_to?>" class="date_in" style="padding:0 16px;">까지&nbsp;<input type="text" name="_interval_H" id="_interval_H" placeholder="시" maxlength="4" value="<?=$_interval_H?>" style="width:60px">시간 단위 집계</td>
+                                <th>회원</th>
+                                <td>
+                                    <select name="_userid" class="sel_channel">
+                                            <option value="">전체</option>
+<?php                                     	
+foreach($arrUser as $key => $value) {
+?>
+                                    	<option value="<?=$key?>" <?=$_userid==$key?"selected":""?>><?="[".$key."] ".$value?></option>
+<?php
+}
+?>
+                                        </select>
+                                </td>
 							</tr>
-							
                         </tbody>
                     </table>
     				<!-- 검색버튼 START -->
@@ -110,7 +189,6 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
 				</form>
 			</div>
 			<!-- 상품검색(e) -->
-                
                 
 <div class="ism_menu_tab">
     <ul>
@@ -123,7 +201,7 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
                     <path d="M21.3 23H2.6A2.8 2.8 0 010 20.2V3.9C0 2.1 1.2 1 2.8 1h18.4C22.9 1 24 2.2 24 3.8v16.4c0 1.6-1.2 2.8-2.8 2.8zM2.6 2.5c-.6 0-1.2.6-1.2 1.3v16.4c0 .7.6 1.3 1.3 1.3h18.4c.7 0 1.3-.6 1.3-1.3V3.9c0-.7-.6-1.3-1.3-1.3z"></path>
                     <path d="M23.3 6H.6a.8.8 0 010-1.5h22.6a.8.8 0 010 1.5z"></path>
                 </svg>
-	     MENU1
+	     Table
             </a>
         </li>
         <li class="menu_entire" ism_tab="B">
@@ -132,7 +210,7 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
                     <path d="M76 240c12.1 0 23.1-4.8 31.2-12.6l44.2 22A44.9 44.9 0 00196 300a45 45 0 0040.6-64.4l60-60a45 45 0 0062.3-54l52.2-39.2a45 45 0 10-18-24l-52.2 39.2a45 45 0 00-65.5 56.8l-60 60a44.7 44.7 0 00-50.6 8.2l-44.2-22A44.9 44.9 0 0076 150a45 45 0 000 90zM436 30a15 15 0 110 30 15 15 0 010-30zm-120 90a15 15 0 110 30 15 15 0 010-30zM196 240a15 15 0 110 30 15 15 0 010-30zM76 180a15 15 0 110 30 15 15 0 010-30zm0 0"></path>
                     <path d="M497 482h-16V165a15 15 0 00-15-15h-60a15 15 0 00-15 15v317h-30V255a15 15 0 00-15-15h-60a15 15 0 00-15 15v227h-30V375a15 15 0 00-15-15h-60a15 15 0 00-15 15v107h-30V315a15 15 0 00-15-15H46a15 15 0 00-15 15v167H15a15 15 0 100 30h482a15 15 0 100-30zm-76-302h30v302h-30zm-120 90h30v212h-30zM181 390h30v92h-30zM61 330h30v152H61zm0 0"></path>
                 </svg>
-	     MENU2
+	     Chart
             </a>
         </li>
        
@@ -154,56 +232,38 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
                 
 	<div class="display_wrap M_tab main_T_A">                
 			<div class="float-wrap">
-				<h3 class="float-l">총 판매 <strong><?=number_format($pg->getTotalCount())?>건</strong></h3>
+				<h3 class="float-l">전체 <strong><?=number_format($pg->getTotalCount())?>건</strong></h3>
 				<p class="list-adding float-r">
-					<a href="#none" name="_btn_sort" order_by="time_date" order_by_asc="desc" class="<?=$_order_by=="time_date" && $_order_by_asc=="desc"?"on":""?>" >판매일순<em>▼</em></a>
-					<a href="#none" name="_btn_sort" order_by="name" order_by_asc="asc" class="<?=$_order_by=="name" && $_order_by_asc=="asc"?"on":""?>">상품명<em>▲</em></a>
-					<a href="#none" name="_btn_sort" order_by="name" order_by_asc="desc" class="<?=$_order_by=="name" && $_order_by_asc=="desc"?"on":""?>">상품명<em>▼</em></a>
+                    <a href="#none" name="_btn_sort" order_by="lastSeen_date_min" order_by_asc="desc" class="<?=$_order_by=="lastSeen_date" && $_order_by_asc=="desc"?"on":""?>">탐색일<em>▼</em></a>
+                    <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="asc" class="<?=$_order_by=="userid" && $_order_by_asc=="asc"?"on":""?>">아이디순<em>▲</em></a>
+                    <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="desc" class="<?=$_order_by=="userid" && $_order_by_asc=="desc"?"on":""?>">아이디순<em>▼</em></a>
 				</p>
 			</div>
            
             <!-- 메인TABLE(s) -->
             <table class="display odd_color" cellpadding="0" cellspacing="0">
             	<colgroup>
-            		<col style="width:110px;">
-            		<col style="width:70px;">
+                <col>
             		<col>
             		<col>
             		<col>
             		<col>
             		<col>
+                    <col>
             		<col>
-            		<col style="width:150px;">
-            		<col>
-            		<col>
-            		<col>
-            		<col style="width:80px;">
-            		<col style="width:70px;">
-            		<col style="width:70px;">
-            		<col style="width:100px;">
             	</colgroup>
                 <thead>
                     <tr>
-<?php /*                    
-                        <th class="tbl_first">No</th>
-                        <th>주문일시</th>
-*/?>
-                        <th>주문일시</th>
-                        <th>주문번호</th>
-                        <th>판매유형</th>
-                        <th>거래처(채널)</th>
-                        <th>브랜드</th>
-                        <th>상품코드</th>
-                        <th>상품명</th>
-                        <th>옵션코드</th>
-                        <th>옵션명</th>
-                        <th>주문번호</th>
-                        <th>수량</th>
-                        <th>EA</th>
-                        <th>판매가</th>
-                        <th>상태</th>
-                        <th>과/면세</th>
-                        <th>작업일</th>
+                        <th class="tbl_first">ID</th>
+                        <th>이름</th>
+                        <th>시작일시</th>
+                        <th>종료일시</th>
+                        <th>Current Hashrate 평균</th>
+                        <th>Average Hashrate 평균</th>
+                        <th>Reported Hashrate 평균</th>
+                        <th>validShares 평균</th>
+                        <th>activeWorkers 평균</th>
+                        <th>Coin/Min 평균</th>
                     </tr>
                 </thead>
                 <tbody style="border-bottom: 2px solid #395467">
@@ -217,28 +277,23 @@ if ($rs->num_rows > 0) {
 <?php /*                    
                     	<td class="tbl_first" style="text-align:center;"><?=number_format($pg->getMaxNumOfPage() - $i)?></td>
 */?>
-                        <td class="tbl_first txt_c"><?=substr($row["time_date"],0,10)." ".$arrDayOfWeek[date('w', strtotime(substr($row["time_date"],0,10)))]?></td>
-                        <td class="txt_c"><?=$row["order_no"]?></td>
-                        <td class="txt_c" style="<?=$row["order_type"]>"1"?"color:green;":""?> ?>"><?=$arrSalesType[$row["order_type"]]?></td>
-                        <td class="txt_c" style="<?=$row["imc_idx"]>"1"?"color:green;":""?> ?>"><?=$row["channel"]?></td>
-                        <td class="txt_c"><?=$row["brand_name"]?></td>
-                        <td><?=$row["code"]?></td>
-                        <td><?=$row["name"]?></td>
-                        <td><?=$row["item_code"]?></td>
-                        <td><?=$row["item_name"]?></td>
-                        <td class="txt_c"><?=$row["order_no"]?></td>
-                        <td class="txt_r"><?=number_format($row["amount"])?></td>
-                        <td class="txt_r"><?=number_format($row["ea"])?></td>
-                        <td class="txt_r"><?=number_format($row["price_collect"])?></td>
-                        <td class="txt_c"><?=$row["status"]?></td>
-                        <td class="txt_c"><?=$row["tax_type"]?></td>
-                        <td class="txt_c"><?=substr($row["reg_date"],0,10)?></td>
+                        <td class="tbl_first txt_c"><?=$row['userid']?></td>
+                        <td class="txt_c"><?=$arrUser[$row["userid"]]?></td>
+                        <td class="txt_c"><?=$row["lastSeen_date_min"]?></td>
+                        <td class="txt_c"><?=$row["lastSeen_date_max"]?></td>
+                        <td class="txt_r"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+                        <td class="txt_r"><?=number_format($row["averageHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+                        <td class="txt_r"><?=number_format($row["reportedHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+                        <td class="txt_r"><?=number_format($row["validShares"], 0)?></td>
+                        <td class="txt_r"><?=number_format($row["activeWorkers"], 0)?></td>
+                        <td class="txt_r"><?=number_format($row["coinsPerMin"], 5)?> ETH</td>
+
                     </tr>
 <?php
     }
 } else {
 ?>
-					<tr><td colspan="15" class="txt_c">No Data.</td></tr>
+					<tr><td colspan="6" class="txt_c">No Data.</td></tr>
 <?php
 }
 ?>
@@ -255,17 +310,20 @@ if ($rs->num_rows > 0) {
 </div>
     	
 <div class="display_wrap M_tab main_T_B" style="display: none; ">
-<div class="float-wrap">
-    간다라
+    <div class="float-wrap">
+    <div class="container">
+	<canvas id="myChart"></canvas> 
+</div>
+    
     </div>
 </div>
     	
-    		
+<?php
+/*
 		<a href="#none" onclick="javascript:goPageTop();"  style="position: fixed; right: 31px; bottom: 31px; width: 67px; height: 67px; line-height: 70px; background-color: #313A3D; border: none; border-radius: 50%; z-index: 999; box-sizing: border-box; color: #fff; letter-spacing: .3px; text-align: center;">TOP<img src="/images/common/top.png" alt="" style=" margin: -2px 0 0 2px;"/></a>
+*/
+?>        
     		
-<div class="container">
-	<canvas id="myChart"></canvas> 
-</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -277,24 +335,14 @@ if ($rs->num_rows > 0) {
  var ctx = document.getElementById('myChart').getContext('2d'); 
  var chart = new Chart(ctx,  {
   // 챠트 종류를 선택
-  type: 'line',
+    type: 'line',
    // 챠트를 그릴 데이타 
-  data: { labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'], 
-  datasets: [{ 
-  label: '루시어돈', 
-  backgroundColor: 'transparent', 
-  borderColor: 'red', 
-  data: [0, 10, 5, 2, 20, 30, 45] 
-  }]
-  },
-   // 옵션 
-  options: {}
-   });
-    </script>
-
-
-
-
+    data: { 
+        labels: [<?=$chart_label?>], 
+        datasets: [<?=$chart_data?>],
+        options: {}
+   }});
+</script>
 
 
 <script src="/cms/js/util/ValidCheck.js"></script>
@@ -324,18 +372,30 @@ $(document).on("click","a[name=btnSearch]",function() {
 	
 	var f = document.searchForm;
 
-    if ( VC_inValidDate(f._time_date_from, "판매일자 시작일") ) return false;
-    if ( VC_inValidDate(f._time_date_to, "판매일자 종료일") ) return false;
+    if ( VC_inValidDate(f._lastSeen_date_from, "탐색일 시작일") ) return false;
+    if ( VC_inValidDate(f._lastSeen_date_to, "탐색일 종료일") ) return false;
 
-	let arrFromDate=f._time_date_from.value.split('-');
-	let arrToDate=f._time_date_to.value.split('-');
+    if ( VC_inValidText(f._lastSeen_date_H_from, "탐색일 시작 시간") ) return false;
+    if ( VC_inValidText(f._interval_H, "시간 간격") ) return false;
+
+    if ( VC_inValidNumber(f._lastSeen_date_H_from, "탐색일 시작 시간") ) return false;
+    if ( VC_inValidNumber(f._interval_H, "시간 간격") ) return false;
+
+    if (f._lastSeen_date_H_from.value > 23 || f._lastSeen_date_H_from.value < 0) {
+        alert("탐색일 시작 시간은 0~23 범위 내에서 입력해 주십시오.     ");
+        f._lastSeen_date_H_from.focus();
+        return false;
+    }
+
+	let arrFromDate=f._lastSeen_date_from.value.split('-');
+	let arrToDate=f._lastSeen_date_to.value.split('-');
 	
 	let fromDate = addMonth(new Date(arrFromDate[0],arrFromDate[1]-1,arrFromDate[2]), 12);
 	let toDate = new Date(arrToDate[0],arrToDate[1]-1,arrToDate[2]);
 		
 	if (fromDate <= toDate) {
 		alert("최대 1년 단위로 조회하실 수 있습니다.    ");
-		f._time_date_from.focus();
+		f._lastSeen_date_from.focus();
 	
 		return false;
 	}
@@ -343,85 +403,25 @@ $(document).on("click","a[name=btnSearch]",function() {
     f.submit();	
 });
 
-$(document).on('change','.sel_category',function() {
-	var obj_select, obj_select_other;
-	var next_depth = parseInt($(this).attr('depth'))+1;
-	var i;
-
-	if($("option:selected", this).val()!=="") {
-	
-    	obj_select = $('.sel_category[depth='+next_depth+']');
-    	
-    	for(i=next_depth+1;i<=4;i++) {
-    		$('.sel_category[depth='+i+']').css("display","none");
-    		$('.sel_category[depth='+i+'] option:eq(0)').prop("selected",true);
-    	}
-
-    	$.ajax({
-    		url: "/ism/ajax/ajax_category.php",
-    		data: {upper_imct_idx: $("option:selected", this).val()},
-    		async: true,
-    		cache: false,
-    		error: function(xhr){	},
-    		success: function(data){
-    		
-    			if(data.length > 10) {
-        			obj_select.html(data);
-        			
-        			obj_select.css("display","inline-block");
-    			} else {
-    				obj_select.css("display","none");
-    			}
-    		}
-    	});
-	} else {
-    	for(i=next_depth;i<=4;i++) {
-    		$('.sel_category[depth='+i+']').css("display","none");
-    		$('.sel_category[depth='+i+'] option:eq(0)').prop("selected",true);
-    	}
-	}
-});
-
-$(document).on('change','.sel_order_type',function() {
-	getSelChannel($("option:selected", this).val());
-});
-
-var getSelChannel = function(order_type) {
-	var obj_select
-
-	obj_select = $('.sel_channel');
-
-	$.ajax({
-		url: "/ism/ajax/ajax_channel.php",
-		data: {imst_idx: order_type},
-		async: true,
-		cache: false,
-		error: function(xhr){	},
-		success: function(data){
-			obj_select.html(data);
-		}
-	});
-}
-
 $(document).on('click','a[name=btnExcelDownload]', function() {
 
 	var f = document.pageForm;
+
+	let arrFromDate=f._lastSeen_date_from.value.split('-');
+	let arrToDate=f._lastSeen_date_to.value.split('-');
 	
-	let arrFromDate=f._time_date_from.value.split('-');
-	let arrToDate=f._time_date_to.value.split('-');
-	
-	let fromDate = addMonth(new Date(arrFromDate[0],arrFromDate[1]-1,arrFromDate[2]), 1);
+	let fromDate = addMonth(new Date(arrFromDate[0],arrFromDate[1]-1,arrFromDate[2]), 12);
 	let toDate = new Date(arrToDate[0],arrToDate[1]-1,arrToDate[2]);
 
 	if (fromDate <= toDate) {
-		alert("엑셀 다운로드는 최대 1개월 단위로 다운로드 하실 수 있습니다.    ");
-		f._time_date_from.focus();
+		alert("엑셀 다운로드는 최대 12개월 단위로 다운로드 하실 수 있습니다.    ");
+		f._lastSeen_date_from.focus();
 	
 		return false;
 	}
-	
+
 	f.target = "_new";
-	f.action = "order_list_xls.php";
+	f.action = "hashrate_aggr_list_xls.php";
 	
 	f.submit();
 });
@@ -429,7 +429,7 @@ $(document).on('click','a[name=btnExcelDownload]', function() {
 var goPage = function(page) {
 	var f = document.pageForm;
 	f.currentPage.value = page;
-	f.action = "order_list.php";
+	f.action = "hashrate_aggr_list.php";
 	f.submit();
 }
 
@@ -442,7 +442,7 @@ var goSort = function(p_order_by, p_order_by_asc) {
 	f.currentPage.value = 1;
 	f._order_by.value = p_order_by;
 	f._order_by_asc.value = p_order_by_asc;
-	f.action = "order_list.php";
+	f.action = "hashrate_aggr_list.php";
 	f.submit();
 }
 
@@ -451,4 +451,5 @@ var goSort = function(p_order_by, p_order_by_asc) {
 include $_SERVER['DOCUMENT_ROOT']."/admin/include/footer.php";
 
 @ $rs->free();
+@ $rs2->free();
 ?>

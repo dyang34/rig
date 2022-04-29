@@ -174,7 +174,7 @@ class CurrentStatsMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            //$pg->setTotalCount(CurrentStatsDao::getInstance()->selectCount($db, $wq));
+            $pg->setTotalCount(CurrentStatsDao::getInstance()->selectAvg2Count($db, $wq, $start_ymdh, $interval_h));
             $result = CurrentStatsDao::getInstance()->selectAvg2PerPage($db, $wq, $start_ymdh, $interval_h, $pg);
             
         } catch(Exception $e) {

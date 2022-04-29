@@ -11,10 +11,10 @@ if (!LoginManager::isManagerLogined()) {
 
 switch(LoginManager::getManagerLoginInfo('adm_grade')) {
     case "1":
-        JsUtil::replace("/admin/adm_mem_list.php");
+        JsUtil::replace("/admin/hashrate/hashrate_aggr_list.php");
         break;
     case "10":
-        JsUtil::replace("/admin/adm_mem_list.php");
+        JsUtil::replace("/admin/hashrate/hashrate_aggr_list.php");
         break;
     default:
         JsUtil::alertBack("비정상적인 권한입니다.");

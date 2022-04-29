@@ -12,6 +12,11 @@ if(!LoginManager::isManagerLogined()) {
     exit;
 }
 
+if (RequestUtil::isMobileAgent()) {
+    header("Location:/admin/m/".basename($_SERVER['REQUEST_URI']));;
+    exit;
+}
+
 $menuCate = 1;
 $menuNo = 1;
 
@@ -29,7 +34,7 @@ $wq = new WhereQuery(true, true);
 $wq->addAndString2("rm_fg_del","=","0");
 $wq->addAndLike("rm_name",$_rm_name);
 $wq->addAndString("userid","=",$_userid);
-$wq->addAndString("rm_wallet_addr","=",$_rm_wallet_addr);
+$wq->addAndLike("rm_wallet_addr",$_rm_wallet_addr);
 
 switch($_orderby) {
     case "reg_date":
