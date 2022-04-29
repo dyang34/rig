@@ -72,7 +72,9 @@ th{font-size:11px;text-align:center;color:white;background-color:#000081;}
         <th style="color:white;background-color:#000081;">시작일시</th>
         <th style="color:white;background-color:#000081;">종료일시</th>
         <th style="color:white;background-color:#000081;">Current Hashrate 평균(H/s)</th>
+<?php /*        
         <th style="color:white;background-color:#000081;">Average Hashrate 평균(H/s)</th>
+*/?>        
         <th style="color:white;background-color:#000081;">Reported Hashrate 평균(H/s)</th>
         <th style="color:white;background-color:#000081;">validShares 평균</th>
         <th style="color:white;background-color:#000081;">activeWorkers 평균</th>
@@ -89,7 +91,9 @@ if ($rs->num_rows > 0) {
         <td style="text-align:center;"><?=$row["lastSeen_date_min"]?></td>
         <td style="text-align:center;"><?=$row["lastSeen_date_max"]?></td>
         <td style="text-align:right;"><?=number_format($row["currentHashrate"],0)?></td>
+<?php /*        
         <td style="text-align:right;"><?=number_format($row["averageHashrate"],0)?></td>
+*/?>        
         <td style="text-align:right;"><?=number_format($row["reportedHashrate"],0)?></td>
         <td style="text-align:right;"><?=number_format($row["validShares"],0)?></td>
         <td style="text-align:right;"><?=number_format($row["activeWorkers"],0)?></td>

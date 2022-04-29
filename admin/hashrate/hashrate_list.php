@@ -156,7 +156,9 @@ if ( $rs->num_rows > 0 ) {
                 <th>탐색일</th>
                 <th>등록일</th>
                 <th>Current Hashrate</th>
+<?php /*
                 <th>Average Hashrate</th>
+*/ ?>
                 <th>Reported Hashrate</th>
                 <th>valiedShares</th>
                 <th>activeWorkers</th>
@@ -195,7 +197,9 @@ if ( $rs->num_rows > 0 ) {
 */
 ?>
                 <td style="text-align:right;"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+<?php /*
                 <td style="text-align:right;"><?=number_format($row["averageHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+*/ ?>
                 <td style="text-align:right;"><?=number_format($row["reportedHashrate"]/1000/1000/1000, 1)?>GH/s</td>
                 <td style="text-align:right;"><?=number_format($row["validShares"], 0)?></td>
                 <td style="text-align:right;"><?=number_format($row["activeWorkers"], 0)?></td>

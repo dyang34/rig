@@ -259,7 +259,9 @@ foreach($arrUser as $key => $value) {
                         <th>시작일시</th>
                         <th>종료일시</th>
                         <th>Current Hashrate 평균</th>
+<?php /*
                         <th>Average Hashrate 평균</th>
+*/?>        
                         <th>Reported Hashrate 평균</th>
                         <th>validShares 평균</th>
                         <th>activeWorkers 평균</th>
@@ -282,7 +284,9 @@ if ($rs->num_rows > 0) {
                         <td class="txt_c"><?=$row["lastSeen_date_min"]?></td>
                         <td class="txt_c"><?=$row["lastSeen_date_max"]?></td>
                         <td class="txt_r"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+<?php /*
                         <td class="txt_r"><?=number_format($row["averageHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+*/?>        
                         <td class="txt_r"><?=number_format($row["reportedHashrate"]/1000/1000/1000, 1)?>GH/s</td>
                         <td class="txt_r"><?=number_format($row["validShares"], 0)?></td>
                         <td class="txt_r"><?=number_format($row["activeWorkers"], 0)?></td>
