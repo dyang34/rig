@@ -56,6 +56,8 @@ switch($_orderby) {
         $wq->addOrderBy("amount","desc");
         break;
 }
+$wq->addOrderBy("reg_date","desc");
+$wq->addOrderBy("userid","asc");
 
 $rs = MemberMgr::getInstance()->getListPerPage($wq, $pg);
 

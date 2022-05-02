@@ -53,13 +53,17 @@ th{font-size:11px;text-align:center;color:white;background-color:#000081;}
         <th style="color:white;background-color:#000081;">탐색일</th>
         <th style="color:white;background-color:#000081;">요일</th>
         <th style="color:white;background-color:#000081;">등록일</th>
-        <th style="color:white;background-color:#000081;">Current Hashrate(H/s)</th>
+        <th style="color:white;background-color:#000081;">Current(H/s)</th>
+        <th style="color:white;background-color:#000081;">효율(%)</th>
 <?php /*
         <th style="color:white;background-color:#000081;">Average Hashrate(H/s)</th>
 */ ?>        
-        <th style="color:white;background-color:#000081;">Reported Hashrate(H/s)</th>
+        <th style="color:white;background-color:#000081;">Reported(H/s)</th>
         <th style="color:white;background-color:#000081;">valiedShares</th>
+        <th style="color:white;background-color:#000081;">invalidShares</th>
+        <th style="color:white;background-color:#000081;">staleShares</th>
         <th style="color:white;background-color:#000081;">activeWorkers</th>
+        <th style="color:white;background-color:#000081;">unpaid(ETH)</th>
         <th style="color:white;background-color:#000081;">Coin/Min(ETH)</th>
     </tr>
 <?php
@@ -76,12 +80,16 @@ if ( $rs->num_rows > 0 ) {
         <td style="text-align:center;<?=$idx_day_of_week=="6"?"color:blue;":($idx_day_of_week=="0"?"color:red;":"")?>"><?=$arrDayOfWeek[$idx_day_of_week]?></td>
         <td style="text-align:center;"><?=$row["time_date"]?></td>
         <td style="text-align:right;"><?=number_format($row["currentHashrate"], 1)?></td>
+        <td style="text-align:right;"><?=number_format($row["currentHashrate"]/$row["reportedHashrate"]*100, 1)?>%</td>
 <?php /*
         <td style="text-align:right;"><?=number_format($row["averageHashrate"], 1)?></td>
 */?>
         <td style="text-align:right;"><?=number_format($row["reportedHashrate"], 1)?></td>
         <td style="text-align:right;"><?=number_format($row["validShares"], 0)?></td>
+        <td style="text-align:right;"><?=number_format($row["invalidShares"], 0)?></td>
+        <td style="text-align:right;"><?=number_format($row["staleShares"], 0)?></td>
         <td style="text-align:right;"><?=number_format($row["activeWorkers"], 0)?></td>
+        <td style="text-align:right;"><?=number_format($row["unpaid"]/1000000000000000000, 5)?></td>
         <td style="text-align:right;"><?=number_format($row["coinsPerMin"], 5)?></td>
         
         

@@ -69,13 +69,16 @@ th{font-size:11px;text-align:center;color:white;background-color:#000081;}
     <tr>
         <th style="color:white;background-color:#000081;">ID</th>
         <th style="color:white;background-color:#000081;">이름</th>
-        <th style="color:white;background-color:#000081;">시작일시</th>
-        <th style="color:white;background-color:#000081;">종료일시</th>
-        <th style="color:white;background-color:#000081;">Current Hashrate 평균(H/s)</th>
+        <th style="color:white;background-color:#000081;">시작등록일</th>
+        <th style="color:white;background-color:#000081;">종료등록일</th>
+        <th style="color:white;background-color:#000081;">시작탐색일</th>
+        <th style="color:white;background-color:#000081;">종료탐색일</th>
+        <th style="color:white;background-color:#000081;">Current 평균(H/s)</th>
+        <th style="color:white;background-color:#000081;">효율(%)</th>
 <?php /*        
         <th style="color:white;background-color:#000081;">Average Hashrate 평균(H/s)</th>
 */?>        
-        <th style="color:white;background-color:#000081;">Reported Hashrate 평균(H/s)</th>
+        <th style="color:white;background-color:#000081;">Reported 평균(H/s)</th>
         <th style="color:white;background-color:#000081;">validShares 평균</th>
         <th style="color:white;background-color:#000081;">activeWorkers 평균</th>
         <th style="color:white;background-color:#000081;">Coin/Min 평균(ETH)</th>
@@ -88,9 +91,12 @@ if ($rs->num_rows > 0) {
     <tr>
         <td style="text-align:center;"><?=$row['userid']?></td>
         <td style="text-align:center;"><?=$arrUser[$row["userid"]]?></td>
+        <td style="text-align:center;"><?=substr($row["time_date_min"],0,13)."시"?></td>
+        <td style="text-align:center;"><?=substr($row["time_date_max"],0,13)."시"?></td>
         <td style="text-align:center;"><?=$row["lastSeen_date_min"]?></td>
         <td style="text-align:center;"><?=$row["lastSeen_date_max"]?></td>
         <td style="text-align:right;"><?=number_format($row["currentHashrate"],0)?></td>
+        <td style="text-align:right;"><?=number_format($row["currentHashrate"]/$row["reportedHashrate"]*100, 1)?>%</td>
 <?php /*        
         <td style="text-align:right;"><?=number_format($row["averageHashrate"],0)?></td>
 */?>        

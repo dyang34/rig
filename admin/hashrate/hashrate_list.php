@@ -127,9 +127,11 @@ include $_SERVER['DOCUMENT_ROOT']."/admin/include/header.php";
 	<div class="float-wrap">
 		<h3 class="float-l">전체 <strong><?=number_format($pg->getTotalCount())?>건</strong></h3>
 		<p class="list-adding float-r">
-            <a href="#none" name="_btn_sort" order_by="lastSeen_date" order_by_asc="desc" class="<?=$_order_by=="lastSeen_date" && $_order_by_asc=="desc"?"on":""?>">탐색일<em>▼</em></a>
+            <a href="#none" name="_btn_sort" order_by="lastSeen_date" order_by_asc="desc" class="<?=$_order_by=="lastSeen_date" && $_order_by_asc=="desc"?"on":""?>">탐색일순<em>▼</em></a>
             <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="asc" class="<?=$_order_by=="userid" && $_order_by_asc=="asc"?"on":""?>">아이디순<em>▲</em></a>
             <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="desc" class="<?=$_order_by=="userid" && $_order_by_asc=="desc"?"on":""?>">아이디순<em>▼</em></a>
+            <a href="#none" name="_btn_sort" order_by="currentHashrate" order_by_asc="asc" class="<?=$_order_by=="currentHashrate" && $_order_by_asc=="asc"?"on":""?>">Current Hashrate<em>▲</em></a>
+            <a href="#none" name="_btn_sort" order_by="currentHashrate" order_by_asc="desc" class="<?=$_order_by=="currentHashrate" && $_order_by_asc=="desc"?"on":""?>">Current Hashrate<em>▼</em></a>
 		</p>
 	</div>
 			
@@ -155,14 +157,14 @@ if ( $rs->num_rows > 0 ) {
                 <th>이름</th>
                 <th>탐색일</th>
                 <th>등록일</th>
-                <th>Current Hashrate</th>
+                <th>Current</th>
+                <th>효율(%)</th>
 <?php /*
                 <th>Average Hashrate</th>
 */ ?>
-                <th>Reported Hashrate</th>
+                <th>Reported</th>
                 <th>valiedShares</th>
                 <th>activeWorkers</th>
-                <th>Coin/Min</th>
             </tr>
         </thead>
 		<tbody style="border-bottom: 2px solid #395467">
@@ -197,15 +199,13 @@ if ( $rs->num_rows > 0 ) {
 */
 ?>
                 <td style="text-align:right;"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+                <td style="text-align:right;"><?=number_format($row["currentHashrate"]/$row["reportedHashrate"]*100, 1)?>%</td>
 <?php /*
                 <td style="text-align:right;"><?=number_format($row["averageHashrate"]/1000/1000/1000, 1)?>GH/s</td>
 */ ?>
                 <td style="text-align:right;"><?=number_format($row["reportedHashrate"]/1000/1000/1000, 1)?>GH/s</td>
                 <td style="text-align:right;"><?=number_format($row["validShares"], 0)?></td>
                 <td style="text-align:right;"><?=number_format($row["activeWorkers"], 0)?></td>
-                <td style="text-align:right;"><?=number_format($row["coinsPerMin"], 5)?> ETH</td>
-                
-                
                 </td>
             </tr>
 <?php

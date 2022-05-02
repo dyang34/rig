@@ -234,9 +234,11 @@ foreach($arrUser as $key => $value) {
 			<div class="float-wrap">
 				<h3 class="float-l">전체 <strong><?=number_format($pg->getTotalCount())?>건</strong></h3>
 				<p class="list-adding float-r">
-                    <a href="#none" name="_btn_sort" order_by="lastSeen_date_min" order_by_asc="desc" class="<?=$_order_by=="lastSeen_date" && $_order_by_asc=="desc"?"on":""?>">탐색일<em>▼</em></a>
+                    <a href="#none" name="_btn_sort" order_by="lastSeen_date_min" order_by_asc="desc" class="<?=$_order_by=="lastSeen_date_min" && $_order_by_asc=="desc"?"on":""?>">탐색일순<em>▼</em></a>
                     <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="asc" class="<?=$_order_by=="userid" && $_order_by_asc=="asc"?"on":""?>">아이디순<em>▲</em></a>
                     <a href="#none" name="_btn_sort" order_by="userid" order_by_asc="desc" class="<?=$_order_by=="userid" && $_order_by_asc=="desc"?"on":""?>">아이디순<em>▼</em></a>
+                    <a href="#none" name="_btn_sort" order_by="currentHashrate" order_by_asc="asc" class="<?=$_order_by=="currentHashrate" && $_order_by_asc=="asc"?"on":""?>">Current Hashrate<em>▲</em></a>
+                    <a href="#none" name="_btn_sort" order_by="currentHashrate" order_by_asc="desc" class="<?=$_order_by=="currentHashrate" && $_order_by_asc=="desc"?"on":""?>">Current Hashrate<em>▼</em></a>
 				</p>
 			</div>
            
@@ -256,16 +258,16 @@ foreach($arrUser as $key => $value) {
                     <tr>
                         <th class="tbl_first">ID</th>
                         <th>이름</th>
-                        <th>시작일시</th>
-                        <th>종료일시</th>
-                        <th>Current Hashrate 평균</th>
+                        <th>시작일시<br/>(탐색시작)</th>
+                        <th>종료일시<br/>(탐색종료)</th>
+                        <th>Current 평균</th>
+                        <th>효율(%)</th>
 <?php /*
                         <th>Average Hashrate 평균</th>
 */?>        
-                        <th>Reported Hashrate 평균</th>
+                        <th>Reported 평균</th>
                         <th>validShares 평균</th>
                         <th>activeWorkers 평균</th>
-                        <th>Coin/Min 평균</th>
                     </tr>
                 </thead>
                 <tbody style="border-bottom: 2px solid #395467">
@@ -281,16 +283,16 @@ if ($rs->num_rows > 0) {
 */?>
                         <td class="tbl_first txt_c"><?=$row['userid']?></td>
                         <td class="txt_c"><?=$arrUser[$row["userid"]]?></td>
-                        <td class="txt_c"><?=$row["lastSeen_date_min"]?></td>
-                        <td class="txt_c"><?=$row["lastSeen_date_max"]?></td>
+                        <td class="txt_c"><?=substr($row["time_date_min"],0,13)."시<div style='margin-top:5px;color:#888;'>(".$row["lastSeen_date_min"].")</div>"?></td>
+                        <td class="txt_c"><?=substr($row["time_date_max"],0,13)."시<div style='margin-top:5px;color:#888;'>(".$row["lastSeen_date_max"].")</div>"?></td>
                         <td class="txt_r"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
+                        <td style="text-align:right;"><?=number_format($row["currentHashrate"]/$row["reportedHashrate"]*100, 1)?>%</td>
 <?php /*
                         <td class="txt_r"><?=number_format($row["averageHashrate"]/1000/1000/1000, 1)?>GH/s</td>
 */?>        
                         <td class="txt_r"><?=number_format($row["reportedHashrate"]/1000/1000/1000, 1)?>GH/s</td>
                         <td class="txt_r"><?=number_format($row["validShares"], 0)?></td>
                         <td class="txt_r"><?=number_format($row["activeWorkers"], 0)?></td>
-                        <td class="txt_r"><?=number_format($row["coinsPerMin"], 5)?> ETH</td>
 
                     </tr>
 <?php
