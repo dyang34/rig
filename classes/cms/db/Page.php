@@ -492,7 +492,7 @@ class Page
         
         $ret = "";
         $last = 0;
-        $pageBlock = 5;
+        $pageBlock = 4;
         $rest = 0;
         $start = 0;
         
