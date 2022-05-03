@@ -210,8 +210,8 @@ if ( $rs->num_rows > 0 ) {
 ?>
             <tr>
                 <td class="tbl_first" style="text-align:center;"><?=$arrUser[$row["userid"]]?></td>
-                <td class="txt_c"><?=substr($row["time_date_min"],0,13)."시<div style='margin-top:5px;color:#888;'>(".$row["lastSeen_date_min"].")</div>"?></td>
-                <td class="txt_c"><?=substr($row["time_date_max"],0,13)."시<div style='margin-top:5px;color:#888;'>(".$row["lastSeen_date_max"].")</div>"?></td>
+                <td class="txt_c"><?=substr($row["time_date_min"],5,8)."시<div style='margin-top:5px;color:#888;'>(".substr($row["lastSeen_date_min"],5).")</div>"?></td>
+                <td class="txt_c"><?=substr($row["time_date_max"],5,8)."시<div style='margin-top:5px;color:#888;'>(".substr($row["lastSeen_date_max"],5).")</div>"?></td>
                 <td class="txt_r"><?=number_format($row["currentHashrate"]/1000/1000/1000, 1)?>GH/s</td>
                 </td>
             </tr>
