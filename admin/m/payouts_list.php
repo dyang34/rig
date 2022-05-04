@@ -182,8 +182,8 @@ if ( $rs->num_rows > 0 ) {
 	
         var f = document.searchForm;
 
-        if ( VC_inValidDate(f._lastSeen_date_from, "지급 시작일") ) return false;
-        if ( VC_inValidDate(f._lastSeen_date_to, "지급 종료일") ) return false;
+        if ( VC_inValidDate(f._reg_date_from, "지급 시작일") ) return false;
+        if ( VC_inValidDate(f._reg_date_to, "지급 종료일") ) return false;
 
         f.submit();	
     });
