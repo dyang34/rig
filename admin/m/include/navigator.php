@@ -14,6 +14,12 @@
 										<a href="/admin/m/hashrate_aggr_list.php" style="margin-top:10px;">- HashRate 집계</a>
 									</div>
 								</li>
+								<li>
+									<a href="/admin/m/payouts_list.php">Payouts<span></span></a>
+									<div class="subMenu">
+										<a href="/admin/m/payouts_list.php">- Payouts</a>
+									</div>
+								</li>
                                 <li style="margin-top: 10px;">
 									<a href="/admin/admin_logout.php">Logout<span></span></a>
 									<div class="subMenu">

@@ -30,6 +30,7 @@ $wq->addAndString("currentHashrate","<=",$_lower_average_hashrate*1000*1000*1000
 
 $wq->addOrderBy($_order_by, $_order_by_asc);
 $wq->addOrderBy("lastSeen_date","desc");
+$wq->addOrderBy("userid","asc");
 
 $rs = CurrentStatsMgr::getInstance()->getList($wq);
 
@@ -91,9 +92,6 @@ if ( $rs->num_rows > 0 ) {
         <td style="text-align:right;"><?=number_format($row["activeWorkers"], 0)?></td>
         <td style="text-align:right;"><?=number_format($row["unpaid"]/1000000000000000000, 5)?></td>
         <td style="text-align:right;"><?=number_format($row["coinsPerMin"], 5)?></td>
-        
-        
-        </td>
     </tr>
 <?php
     }

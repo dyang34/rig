@@ -91,9 +91,6 @@ if ( $rs->num_rows > 0 ) {
         <td style="text-align:right;"><?=number_format($row["activeWorkers"], 0)?></td>
         <td style="text-align:right;"><?=number_format($row["unpaid"]/1000000000000000000, 5)?></td>
         <td style="text-align:right;"><?=number_format($row["coinsPerMin"], 5)?></td>
-        
-        
-        </td>
     </tr>
 <?php
     }

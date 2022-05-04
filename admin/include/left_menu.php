@@ -19,6 +19,12 @@
                     <a href="/admin/hashrate/hashrate_aggr_list.php " class="<?=$menuNo==3?"on":""?>">- HashRate 집계</a>
                 </div>
             </li>
+            <li>
+                <a href='#' class="btn <?=$menuCate==3?"on":""?>">Payouts<span></span></a>
+                <div class="subMenu">
+                	<a href="/admin/payouts/payouts_list.php " class="<?=$menuNo==4?"on":""?>">- Payouts 명세</a>
+                </div>
+            </li>
     <?php
     }
     ?>
